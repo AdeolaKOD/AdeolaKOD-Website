@@ -211,8 +211,8 @@ footer { border-top: 1px solid var(--line); }
   .project:nth-child(odd) { border-right: 0; }
   .project:nth-last-child(2) { border-bottom: 1px solid var(--line); }
   .cv { grid-template-columns: 1fr; }
-  .cv > h2 { padding: 24px 0 0; border-top: 1px solid var(--line); }
-  .cv > div { border-top: 0; padding: 10px 0 24px; }
+  .cv > h2 { padding: 24px 20px 0; border-top: 1px solid var(--line); }
+  .cv > div { border-top: 0; padding: 10px 20px 24px; }
 }
 
 @media (max-width: 640px) {
