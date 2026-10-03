@@ -10,7 +10,7 @@ It's plain HTML, CSS and JavaScript. No framework, no build step, and no third-p
 index.html          home: intro and areas of interest
 research.html       research statement and thesis
 projects.html       projects
-cv.html             CV, with the PDF and transcripts
+cv.html             CV, with the PDF and transcript
 404.html            shown by GitHub Pages for any missing page
 assets/
   css/site.css      all the styles
@@ -43,5 +43,5 @@ Python's built-in server (`python3 -m http.server`) also works, but you'll need 
 ## To do
 
 - [ ] Dark mode
-- [ ] Replace the transcripts with redacted copies
+- [ ] Replace the transcript with a redacted copy
 - [ ] Add a publications section to the research page

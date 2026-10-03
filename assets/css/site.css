@@ -66,6 +66,9 @@ section { padding-block: 0 72px; }
 .btn-line { background: var(--page); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
 .btn-line:hover { background: var(--panel); }
 .btn-sm { height: 36px; padding-inline: 14px; font-size: 0.9rem; }
+/* Little arrow on links that leave the site */
+.btn .ext { width: 12px; height: 12px; margin-left: 6px; transition: transform .2s var(--ease); }
+.btn:hover .ext { transform: translate(1px, -1px); }
 
 
 /* ---------- Type ---------- */
