@@ -60,6 +60,9 @@ section { padding-block: 0 72px; }
 /* ---------- Buttons ---------- */
 
 .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+/* Buttons in a row that should all be the width of the widest one */
+.actions.equal { display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; }
+@media (max-width: 480px) { .actions.equal { grid-auto-flow: row; } }
 /* No text selection on buttons: a long press on iOS was highlighting the label instead of just opening the link menu. */
 .btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding-inline: 20px; font-size: 0.98rem; font-weight: 500; text-decoration: none; white-space: nowrap; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
 .btn-dark { background: var(--ink); color: #FFFFFF; }
