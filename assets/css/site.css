@@ -265,6 +265,7 @@ footer { border-top: 1px solid var(--line); }
 .js .blur-in { opacity: 0; filter: blur(10px); transform: translateY(16px); transition: opacity 1s var(--ease), filter 1s var(--ease), transform 1s var(--ease); transition-delay: var(--d, 0ms); }
 .js .blur-in.is-in { opacity: 1; filter: blur(0); transform: none; }
 .js .blur-in.no-tr { transition: none; }
+.js .blur-in.quick { transition-duration: .55s; transition-delay: 0ms; }
 
 @media (prefers-reduced-motion: no-preference) {
   .project:hover .iso .route { animation: trace 1.4s cubic-bezier(.4, 0, .2, 1); }

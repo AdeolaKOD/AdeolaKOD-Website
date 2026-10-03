@@ -185,16 +185,17 @@
     // Waiting for the observer here made tall blocks near the bottom of the screen lag behind.
     var later = targets.filter(function (el) {
       if (el.getBoundingClientRect().top < innerHeight) { show(el); return false; }
+      el.classList.add('quick');   // scroll reveals are shorter so they never feel like a wait
       return true;
     });
 
-    // The rest reveal as they scroll into view
+    // The rest start just *before* they scroll into view, so they're already arriving when you get there
     if (!('IntersectionObserver' in window)) { later.forEach(show); return; }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
       });
-    }, { rootMargin: '0px 0px -40px 0px' });
+    }, { rootMargin: '0px 0px 25% 0px' });
     later.forEach(function (el) { io.observe(el); });
   }
 
