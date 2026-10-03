@@ -148,13 +148,14 @@
 
   // Then each section, staggering project cards individually
   document.querySelectorAll('main > section:not(.hero):not(.page-head)').forEach(function (sec) {
-    var base = sec.getBoundingClientRect().top < innerHeight ? headDelay + 450 : 0;
+    // Sections already on screen follow straight on from the header; ones below the fold get no delay
+    var base = sec.getBoundingClientRect().top < innerHeight ? headDelay + 250 : 0;
     Array.prototype.forEach.call(sec.children, function (el, i) {
       var cards = el.querySelectorAll(':scope > .project');
       if (cards.length) {
-        Array.prototype.forEach.call(cards, function (card, j) { mark(card, base + j * 110); });
+        Array.prototype.forEach.call(cards, function (card, j) { mark(card, base + j * 90); });
       } else {
-        mark(el, base + i * 90);
+        mark(el, base + i * 80);
       }
     });
   });
@@ -176,18 +177,21 @@
     started = true;
     root.classList.remove('wait');
 
-    if (!('IntersectionObserver' in window)) { targets.forEach(show); return; }
+    // Anything that is even partly on screen right now comes in straight away.
+    // Waiting for the observer here made tall blocks near the bottom of the screen lag behind.
+    var later = targets.filter(function (el) {
+      if (el.getBoundingClientRect().top < innerHeight) { show(el); return false; }
+      return true;
+    });
+
+    // The rest reveal as they scroll into view
+    if (!('IntersectionObserver' in window)) { later.forEach(show); return; }
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-    targets.forEach(function (el) { io.observe(el); });
-
-    // Belt and braces: anything already on screen gets shown even if the observer is slow
-    setTimeout(function () {
-      targets.forEach(function (el) { if (el.getBoundingClientRect().top < innerHeight) show(el); });
-    }, 1500);
+    }, { rootMargin: '0px 0px -40px 0px' });
+    later.forEach(function (el) { io.observe(el); });
   }
 
   // Wait for Geist so the headline doesn't reflow mid-animation, but never longer than 1.2s.
