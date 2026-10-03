@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-rhFn0HEHIhJnkSmbQst92W7I3+9bEm17Tdy+C401EJc='; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7u1QKqvmBzrKZThn0ekUIothcDYrqrCMNwEiHqbuY5s='; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Projects | Adeola Kola-Olaleye</title>
 <meta name="description" content="Projects by Adeola Kola-Olaleye: touchless gesture control, ROS robot teleoperation, a pathfinding visualiser and a Flutter notes app.">
@@ -19,7 +19,7 @@
 <link rel="icon" href="/assets/img/adeola.jpg" type="image/jpeg">
 <link rel="apple-touch-icon" href="/assets/img/adeola.jpg">
 <link rel="preload" href="/assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css?v=20261003g">
+<link rel="stylesheet" href="/assets/css/site.css?v=20261003h">
 <!-- Runs before first paint. If you change it, update the sha256 in the CSP above or the browser will block it. -->
 <script>
   (function () {
@@ -30,12 +30,19 @@
     }
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       root.classList.add('js', 'wait');
+      // The top bar only animates on the first page of a visit, not on every click
+      try {
+        if (!sessionStorage.getItem('bar-shown')) {
+          root.classList.add('bar-in');
+          sessionStorage.setItem('bar-shown', '1');
+        }
+      } catch (e) {}
       // Failsafe: if site.js never loads, show the page anyway
       setTimeout(function () { root.classList.remove('wait'); }, 3000);
     }
   })();
 </script>
-<script src="/assets/js/site.js?v=20261003g" defer></script>
+<script src="/assets/js/site.js?v=20261003h" defer></script>
 </head>
 <body>
 <header class="bar">
