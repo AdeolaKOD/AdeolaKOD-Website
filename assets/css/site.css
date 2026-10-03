@@ -69,10 +69,12 @@ section { padding-block: 0 72px; }
 .btn-dark:hover { background: #262626; }
 .btn-line { background: var(--page); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
 .btn-line:hover { background: var(--panel); }
+/* External-link icon. It sits inline after the label, sized to the capital height, so its
+   bottom edge lands exactly on the text baseline. Only the arrow nudges on hover. */
+.ext { display: inline-block; width: .72em; height: .72em; margin-left: .32em; vertical-align: baseline; overflow: visible; }
+.ext .ea { transition: transform .2s var(--ease); }
+a:hover .ext .ea { transform: translate(.8px, -.8px); }
 .btn-sm { height: 36px; padding-inline: 14px; font-size: 0.9rem; min-width: 108px; }   /* same width side by side */
-/* Little arrow on links that leave the site */
-.btn .ext { width: 12px; height: 12px; margin-left: 3px; transition: transform .2s var(--ease); }
-.btn:hover .ext { transform: translate(1px, -1px); }
 
 
 /* ---------- Type ---------- */
@@ -203,8 +205,6 @@ footer { border-top: 1px solid var(--line); }
 .foot nav { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .foot a { display: inline-flex; align-items: center; gap: 3px; color: var(--muted); text-decoration: none; transition: color .15s ease; }
 .foot a:hover { color: var(--ink); }
-.foot .ext { width: 11px; height: 11px; flex: none; transition: transform .2s var(--ease); }
-.foot a:hover .ext { transform: translate(1px, -1px); }
 
 
 /* ---------- Smaller screens ---------- */
