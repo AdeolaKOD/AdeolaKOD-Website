@@ -1,53 +1,52 @@
 (function () {
-  // Liquid glass orbs: a perfect circle on a transparent canvas, filled with slowly flowing colour,
-  // shaded like a sphere (soft highlight, glassy rim, gentle falloff).
+  // Soft, grainy orbs: a feathered circle of slowly flowing colour, set inside a square tile
+  // of the same colours and motion, washed out so it sits in the background.
   var VERT = 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }';
   var FRAG = [
     'precision highp float;',
     'uniform vec2 uRes; uniform float uTime; uniform vec3 c1; uniform vec3 c2; uniform vec3 c3;',
+    'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
     'vec2 flow(vec2 p, float t){',
-    '  for (int k = 1; k < 7; k++){',
+    '  for (int k = 1; k < 6; k++){',
     '    float i = float(k);',
     '    p.x += 0.42 / i * sin(i * 1.7 * p.y + t * 0.9 + 0.3 * i);',
     '    p.y += 0.38 / i * cos(i * 1.3 * p.x - t * 0.7 + 0.6 * i);',
     '  }',
     '  return p;',
     '}',
+    'vec3 field(vec2 p, float t){',
+    '  vec2 q = flow(p, t);',
+    '  float f1 = 0.5 + 0.5 * sin(q.x * 1.9 + q.y * 0.6);',
+    '  float f2 = 0.5 + 0.5 * cos(q.y * 2.1 - q.x * 0.9 + 1.3);',
+    '  vec3 col = mix(c2, c1, smoothstep(0.05, 0.95, f1));',
+    '  return mix(col, c3, smoothstep(0.35, 1.0, f2) * 0.8);',
+    '}',
     'void main(){',
     '  float S = min(uRes.x, uRes.y);',
     '  vec2 uv = (gl_FragCoord.xy * 2.0 - uRes) / S;',
-    '  uv /= 0.985;',
-    '  float r = length(uv);',
-    '  float aa = 3.0 / S;',
-    '  float mask = 1.0 - smoothstep(1.0 - aa, 1.0, r);',
-    '  if (mask <= 0.0) { gl_FragColor = vec4(0.0); return; }',
-    '  float z = sqrt(max(0.0, 1.0 - r * r));',
-    '  vec3 n = vec3(uv, z);',
     '  float t = uTime * 0.35;',
-    // Map through the sphere so the liquid appears to wrap around it
-    '  vec2 sp = uv * (1.25 - 0.35 * z);',
+    // Square backdrop: same colours and motion, broader and washed out so it sits behind the orb
+    '  vec3 bg = field(uv * 0.8 + vec2(3.1, 1.7), t * 0.6);',
+    '  bg = mix(bg, vec3(1.0), 0.45);',
+    '  bg = mix(bg, bg * 0.92, smoothstep(0.7, 1.6, length(uv)));',
+    // Orb: soft, matte, with a feathered edge
+    '  float R = 0.72;',
+    '  float r = length(uv) / R;',
+    '  float rc = min(r, 1.0);',
+    '  float z = sqrt(max(0.0, 1.0 - rc * rc));',
+    '  vec2 sp = (uv / R) * (1.25 - 0.35 * z);',
     '  float a = t * 0.12; sp = mat2(cos(a), -sin(a), sin(a), cos(a)) * sp;',
-    '  vec2 q = flow(sp * 1.6, t);',
-    '  float f1 = 0.5 + 0.5 * sin(q.x * 1.9 + q.y * 0.6);',
-    '  float f2 = 0.5 + 0.5 * cos(q.y * 2.1 - q.x * 0.9 + 1.3);',
-    '  vec3 col = c2;',
-    '  col = mix(col, c1, smoothstep(0.15, 0.85, f1));',
-    '  col = mix(col, c3, smoothstep(0.45, 1.0, f2) * 0.85);',
-    '  col = mix(col, c2, smoothstep(0.7, 1.0, f1 * f2) * 0.6);',
-    // Lighting
+    '  vec3 orb = field(sp * 1.6, t);',
     '  vec3 L = normalize(vec3(-0.45, 0.6, 0.75));',
-    '  float diff = clamp(dot(n, L), 0.0, 1.0);',
-    '  col *= 0.86 + 0.18 * diff;',
-    '  float spec = pow(clamp(dot(reflect(-L, n), vec3(0.0, 0.0, 1.0)), 0.0, 1.0), 18.0);',
-    '  col += vec3(1.0) * spec * 0.32;',
-    '  float soft = 1.0 - smoothstep(0.0, 0.85, length(uv - vec2(-0.32, 0.38)));',
-    '  col = mix(col, vec3(1.0), soft * 0.22);',
-    '  float fres = pow(1.0 - z, 2.6);',
-    '  col = mix(col, vec3(1.0), fres * 0.38);',
-    '  float under = smoothstep(0.2, 1.0, -uv.y * 0.7 + uv.x * 0.25) * (1.0 - fres);',
-    '  col = mix(col, col * 0.86, under * 0.35);',
-    '  col = clamp(col, 0.0, 1.0);',
-    '  gl_FragColor = vec4(col * mask, mask);',
+    '  orb *= 0.9 + 0.14 * clamp(dot(vec3(uv / R, z), L), 0.0, 1.0);',
+    '  orb = mix(orb, vec3(1.0), (1.0 - smoothstep(0.0, 0.9, length(uv / R - vec2(-0.35, 0.4)))) * 0.1);',
+    '  orb = mix(orb, orb * 0.92, smoothstep(0.55, 1.0, r));',
+    '  float m = 1.0 - smoothstep(0.93, 1.04, r);',
+    '  float halo = exp(-pow(max(r - 1.0, 0.0) * 2.6, 2.0)) * (1.0 - m);',
+    '  bg = mix(bg, mix(c1, vec3(1.0), 0.35), halo * 0.22);',
+    '  vec3 col = mix(bg, orb, m);',
+    '  col += (hash(floor(gl_FragCoord.xy)) - 0.5) * 0.07;',
+    '  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);',
     '}'
   ].join('\n');
 
@@ -57,8 +56,7 @@
   function fallback(c, cols) {
     var d = document.createElement('div');
     d.className = c.className;
-    d.style.borderRadius = '50%';
-    d.style.background = 'radial-gradient(circle at 35% 30%, #ffffff 0, ' + cols[1] + ' 30%, ' + cols[0] + ' 65%, ' + cols[2] + ' 100%)';
+    d.style.background = 'radial-gradient(circle at 50% 50%, ' + cols[0] + ' 0, ' + cols[2] + ' 33%, ' + cols[1] + ' 36%, #ffffff 100%)';
     c.replaceWith(d);
   }
 
