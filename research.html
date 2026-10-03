@@ -8,7 +8,7 @@
 <meta name="description" content="Research interests and thesis of Adeola Kola-Olaleye.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Rubik:wght@400..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap">
 <style>
   /* Layout: grey top bar, white page, left headline with right-hand intro, square grey panels. Single light look by choice. */
   :root {
@@ -19,8 +19,8 @@
     --ink: #000000;
     --text: #1F1F1F;
     --muted: #6B6B6B;
-    --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    --display: "Rubik", "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --display: var(--font);
     color-scheme: light;
   }
   * { box-sizing: border-box; }
@@ -34,8 +34,9 @@
   /* Top bar */
   .bar { background: var(--bar); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; }
   .bar-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; }
-  .navlink { display: inline-flex; align-items: center; gap: 10px; height: 40px; padding-inline: 12px; border-radius: 10px; text-decoration: none; color: var(--ink); font-family: var(--display); font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; line-height: 1; white-space: nowrap; transition: background-color .15s ease; }
-  .navlink:hover { background: #E4E4E4; }
+  .navlink { display: inline-flex; align-items: center; gap: 10px; height: 40px; padding-inline: 12px; border-radius: 0; text-decoration: none; color: var(--ink); font-family: var(--display); font-weight: 500; font-size: 1rem; letter-spacing: -0.01em; line-height: 1; white-space: nowrap; transition: background-color .18s ease, transform .18s cubic-bezier(.2,.7,.2,1); }
+  .navlink:hover { background: #E4E4E4; transform: scale(1.06); }
+  .brand:hover { transform: scale(1.04); }
   .navlink[aria-current="page"] { background: #E4E4E4; }
   .brand { margin-left: -12px; }
   .brand img { width: 28px; height: 28px; border-radius: 4px; object-fit: cover; display: block; }
@@ -51,8 +52,8 @@
   .actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
   /* Type */
-  h1 { font-family: var(--display); font-weight: 600; font-size: clamp(2.4rem, 5.6vw, 4rem); line-height: 1.05; letter-spacing: -0.04em; color: var(--ink); margin: 0 0 28px; text-wrap: balance; }
-  h2 { font-family: var(--display); font-weight: 500; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.12; letter-spacing: -0.03em; color: var(--ink); margin: 0 0 14px; text-wrap: balance; }
+  h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.4rem, 5.6vw, 4rem); line-height: 1.05; letter-spacing: -0.04em; color: var(--ink); margin: 0 0 28px; text-wrap: balance; }
+  h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.12; letter-spacing: -0.03em; color: var(--ink); margin: 0 0 14px; text-wrap: balance; }
   h3 { font-family: var(--display); font-weight: 500; font-size: 1.15rem; line-height: 1.3; letter-spacing: -0.01em; color: var(--ink); margin: 0 0 8px; }
   p { margin: 0 0 12px; }
   .muted { color: var(--muted); }
@@ -157,6 +158,7 @@
     .js .blur-in.no-tr { transition: none; }
     @keyframes blurIn { to { opacity: 1; filter: blur(0); transform: none; } }
   }
+  @media (prefers-reduced-motion: reduce) { .navlink:hover, .brand:hover { transform: none; } }
 </style>
 </head>
 <body>
@@ -170,79 +172,34 @@
 
 <section class="page-head">
   <h1>Research</h1>
-  <p class="muted">I have cared for my parents and other older adults, and watched computers and phones become harder for them to use. My thesis turned that into research questions.</p>
-</section>
-
-<section aria-labelledby="study-h">
-  <div class="panel grid-2">
-    <div class="block">
-      <h2 id="study-h">What I want to study</h2>
-      <p>How older adults perceive on-screen feedback and remember gestural interfaces, and whether gestures they define themselves are easier to recall than gestures chosen for them.</p>
-    </div>
-    <div class="block">
-      <p>In my thesis I chose every gesture myself, with no way to tell whether an older person could see the feedback clearly or remember the gestures a day later. My thesis ended by recommending that users define their own gestures. That is the question I want to take further.</p>
-      <p class="muted">Longer term, I want to help build HCI research in Nigeria, where older adults rarely take part in studies.</p>
-    </div>
-  </div>
+  <p class="muted">How older adults perceive on-screen feedback and remember gestural interfaces, and whether gestures they define themselves are easier to recall.</p>
 </section>
 
 <section aria-labelledby="thesis-h">
   <h2 id="thesis-h">Thesis: controlling a computer with just a webcam</h2>
-  <p class="muted"><em>Cognitive Vision-Based Hand Gesture Recognition System for Media and Accessibility Control</em></p>
   <div class="tags">
-    <span class="tag">Nile University of Nigeria, Oct 2025 to Apr 2026</span>
-    <span class="tag">Supervised by Mrs Aisha Lawal</span>
+    <span class="tag">Nile University of Nigeria, 2025–2026</span>
     <span class="tag">Selected for the faculty thesis exhibition</span>
     <span class="tag"><a href="docs/Adeola_Kola-Olaleye_Thesis.pdf">Thesis report (PDF)</a></span>
     <span class="tag"><a href="https://github.com/AdeolaKOD/Cognitive-Vision-Gesture-Control">Code on GitHub</a></span>
   </div>
-
   <div class="panel rows">
     <div class="block split">
       <div>
-        <h3>Where the idea came from, and how it works</h3>
-        <p>A mouse and keyboard can be tiring or painful for people with limited fine motor control. I wanted to find out whether someone could control a computer with hand gestures alone, using only a webcam and a laptop processor, with no depth sensor or GPU.</p>
-        <p>The system tracks both hands in Python with Google MediaPipe and OpenCV. The right hand sets volume from the gap between thumb and index finger, and brightness from how close the palm is to the camera, using palm size as a stand-in for depth. The left hand plays or pauses with a timed double tap, and skips with a pinch and drag.</p>
+        <p>A webcam-only system that lets people control volume, brightness and media playback with hand gestures, built with Python, OpenCV and Google MediaPipe.</p>
+        <p class="muted">I chose every gesture myself. That left me wondering whether older adults could see the feedback clearly or remember the gestures, which is what I want to study next.</p>
       </div>
       <figure>
         <img src="assets/two-hands.jpg" width="874" height="658" alt="Webcam view with both hands raised. Dots and lines mark the tracked hand landmarks; a brightness bar reads 100% and a volume bar reads 48%.">
-        <figcaption>Both hands tracked in one frame. The bars show brightness and volume.</figcaption>
       </figure>
     </div>
-
     <div class="grid-3">
-      <div class="block"><div class="num">35&nbsp;ms</div><p class="muted">Mean latency from gesture to action, under my 50&nbsp;ms limit</p></div>
-      <div class="block"><div class="num">28–30&nbsp;fps</div><p class="muted">In good light, and 15–20 in dim light</p></div>
-      <div class="block"><div class="num">17.8%</div><p class="muted">Average CPU use on a consumer laptop</p></div>
-    </div>
-
-    <div class="grid-2">
-      <div class="block">
-        <h3>What went wrong, and what I changed</h3>
-        <p>In early tests the volume drifted when the lighting changed, because the detected landmarks shifted slightly. I added a clutch: volume only responds while three fingers are folded, so stray movements and small tremors are ignored.</p>
-        <p>My first brightness control used the gap between two fingers and did not work well, so I replaced it with the palm-depth measure. MediaPipe also sometimes labelled the right hand as the left, so I added fallback logic to tell them apart.</p>
-      </div>
-      <div class="block">
-        <h3>How I tested it</h3>
-        <p>I measured latency at each stage of the pipeline and tested the system in dim light and with crossed hands, not only in ideal conditions. All five functional test cases passed.</p>
-        <p>I wrote all of the code, ran the tests and wrote the report, with guidance from my supervisor.</p>
-      </div>
-    </div>
-
-    <div class="block split flip">
-      <figure>
-        <img src="assets/transfer-function.png" width="810" height="640" alt="Scatter plot of calculated volume against thumb–index distance in pixels. Most points follow the dashed intended line, but a second, steeper group rises to 100% at smaller distances.">
-        <figcaption>Recorded volume against thumb–index distance. The dashed line is the mapping I intended.</figcaption>
-      </figure>
-      <div>
-        <h3>What surprised me</h3>
-        <p>Passing tests did not mean the mapping was right. When I plotted the volume the system produced against the mapping I intended, a second, steeper line appeared: the same gesture could give different volumes, most likely because the hand's distance from the camera changes the pixel gap between the fingers.</p>
-        <p>That is when I started caring less about whether a system works and more about whether people can use it.</p>
-      </div>
+      <div class="block"><div class="num">35&nbsp;ms</div><p class="muted">Mean latency</p></div>
+      <div class="block"><div class="num">28–30&nbsp;fps</div><p class="muted">In good light</p></div>
+      <div class="block"><div class="num">17.8%</div><p class="muted">Average CPU use</p></div>
     </div>
   </div>
 </section>
-
 </main>
 <footer>
   <div class="wrap foot">
