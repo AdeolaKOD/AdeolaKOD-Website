@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="assets/adeola.jpg">
+<title>Research | Adeola Kola-Olaleye</title>
+<meta name="description" content="Research interests and thesis of Adeola Kola-Olaleye.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap">
+<style>
+  /* Layout: grey top bar, white page, left headline with right-hand intro, square grey panels. Single light look by choice. */
+  :root {
+    --page: #FFFFFF;
+    --bar: #F2F2F2;
+    --panel: #F6F6F6;
+    --line: #E3E3E3;
+    --ink: #000000;
+    --text: #1F1F1F;
+    --muted: #6B6B6B;
+    --font: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--page); color: var(--text); font-family: var(--font); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  img { max-width: 100%; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding-inline: 24px; }
+
+  /* Top bar */
+  .bar { background: var(--bar); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; }
+  .bar-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; white-space: nowrap; }
+  .brand img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; display: block; }
+  .menu { display: flex; gap: 6px; }
+  .menu a { text-decoration: none; color: var(--ink); font-size: 0.95rem; padding: 8px 12px; }
+  .menu a:hover { background: #E7E7E7; }
+  .menu a[aria-current="page"] { background: var(--page); box-shadow: inset 0 0 0 1px var(--line); }
+
+  /* Buttons: square */
+  .btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding-inline: 20px; font-family: inherit; font-size: 0.98rem; font-weight: 500; text-decoration: none; white-space: nowrap; border-radius: 0; }
+  .btn-dark { background: var(--ink); color: #FFFFFF; }
+  .btn-dark:hover { background: #262626; }
+  .btn-line { background: var(--page); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+  .btn-line:hover { background: var(--panel); }
+  .btn-sm { height: 36px; padding-inline: 14px; font-size: 0.9rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  /* Type */
+  h1 { font-weight: 400; font-size: clamp(2.4rem, 5.6vw, 4rem); line-height: 1.05; letter-spacing: -0.04em; color: var(--ink); margin: 0 0 28px; text-wrap: balance; }
+  h2 { font-weight: 400; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.12; letter-spacing: -0.03em; color: var(--ink); margin: 0 0 14px; text-wrap: balance; }
+  h3 { font-weight: 500; font-size: 1.15rem; line-height: 1.3; letter-spacing: -0.01em; color: var(--ink); margin: 0 0 8px; }
+  p { margin: 0 0 12px; }
+  .muted { color: var(--muted); }
+
+  /* Page header (inner pages) */
+  .page-head { padding-block: 64px 36px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: end; }
+  .page-head h1 { margin: 0; }
+  .page-head p { margin: 0; font-size: 1.08rem; max-width: 34em; }
+
+  /* Home hero */
+  .hero { padding-block: 88px 48px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+  .hero p { font-size: 1.1rem; max-width: 33em; margin-bottom: 14px; }
+
+  /* Panels */
+  .panel { background: var(--panel); border: 1px solid var(--line); }
+  .interests { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .interest { padding: 40px 32px 44px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+  .interest + .interest { border-left: 1px solid var(--line); }
+  .interest p { margin: 0; color: var(--muted); }
+  .orb { display: block; width: 104px; height: 104px; margin-bottom: 22px; border-radius: 50%; }
+  .orb.big { width: min(360px, 70vw); height: min(360px, 70vw); margin: 0; }
+  .orb.small { width: 56px; height: 56px; margin-bottom: 18px; }
+
+  section { padding-block: 0 72px; }
+  .block { padding: 32px; min-width: 0; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
+  .grid-2 > .block + .block { border-left: 1px solid var(--line); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid-3 > .block + .block { border-left: 1px solid var(--line); }
+  .rows > * + * { border-top: 1px solid var(--line); }
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 36px; align-items: center; }
+  .split.flip { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  figure { margin: 0; }
+  figure img { display: block; width: 100%; height: auto; background: #FFFFFF; border: 1px solid var(--line); }
+  figcaption { color: var(--muted); font-size: 0.88rem; margin-top: 10px; }
+  .num { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 400; letter-spacing: -0.04em; line-height: 1; color: var(--ink); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 28px; }
+  .tag { font-size: 0.86rem; padding: 4px 10px; background: var(--panel); border: 1px solid var(--line); color: var(--muted); }
+  .tag a { color: var(--ink); }
+
+  /* Projects */
+  .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project { padding: 32px; display: flex; flex-direction: column; min-width: 0; border-bottom: 1px solid var(--line); }
+  .project:nth-child(odd) { border-right: 1px solid var(--line); }
+  .project:nth-last-child(-n+2) { border-bottom: 0; }
+  .project p { color: var(--muted); }
+  .project .actions { margin-top: auto; padding-top: 8px; }
+  .stack-line { font-size: 0.88rem; color: var(--ink); margin-bottom: 14px; }
+
+  /* CV */
+  .cv { display: grid; grid-template-columns: 200px minmax(0, 1fr); }
+  .cv > h2 { font-size: 1.15rem; font-weight: 500; letter-spacing: -0.01em; padding: 28px 24px; margin: 0; border-top: 1px solid var(--line); }
+  .cv > div { padding: 28px 24px 28px 0; border-top: 1px solid var(--line); min-width: 0; }
+  .cv > h2:first-of-type, .cv > h2:first-of-type + div { border-top: 0; }
+  .item + .item { margin-top: 18px; }
+  .item-head { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .item-title { font-weight: 500; color: var(--ink); margin: 0; }
+  .item-when { color: var(--muted); font-variant-numeric: tabular-nums; margin: 0; white-space: nowrap; }
+  .item-sub { color: var(--muted); margin: 0 0 6px; }
+  .item ul { margin: 6px 0 0; padding-left: 18px; }
+  .item li { margin-bottom: 4px; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--line); }
+  .foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; padding-block: 22px; font-size: 0.9rem; color: var(--muted); }
+  .foot nav { display: flex; gap: 20px; flex-wrap: wrap; }
+  .foot a { color: var(--ink); text-decoration: none; }
+  .foot a:hover { text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .hero, .page-head { grid-template-columns: 1fr; gap: 20px; }
+    .hero { padding-block: 48px 36px; }
+    .page-head { padding-block: 44px 28px; }
+    .interests, .grid-2, .grid-3, .projects { grid-template-columns: 1fr; }
+    .interest + .interest, .grid-2 > .block + .block, .grid-3 > .block + .block { border-left: 0; border-top: 1px solid var(--line); }
+    .project:nth-child(odd) { border-right: 0; }
+    .project:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+    .split, .split.flip { grid-template-columns: 1fr; }
+    .split.flip figure { order: 2; }
+    .cv { grid-template-columns: 1fr; }
+    .cv > h2 { padding: 24px 0 0; }
+    .cv > div { border-top: 0; padding: 10px 0 24px; }
+    .cv > h2 { border-top: 1px solid var(--line); }
+  }
+  @media (max-width: 520px) {
+    .wrap { padding-inline: 16px; }
+    .brand .last { display: none; }
+    .menu { gap: 2px; }
+    .menu a { padding: 8px 8px; font-size: 0.9rem; }
+    .block, .project, .interest { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap bar-inner">
+    <a class="brand" href="index.html"><img src="assets/adeola.jpg" width="32" height="32" alt=""><span>Adeola<span class="last"> Kola&#8209;Olaleye</span></span></a>
+    <nav class="menu" aria-label="Main"><a href="research.html" aria-current="page">Research</a><a href="projects.html">Projects</a><a href="cv.html">CV</a></nav>
+  </div>
+</header>
+<main class="wrap">
+
+<section class="page-head">
+  <h1>Research</h1>
+  <p class="muted">I have cared for my parents and other older adults, and watched computers and phones become harder for them to use. My thesis turned that into research questions.</p>
+</section>
+
+<section aria-labelledby="study-h">
+  <div class="panel grid-2">
+    <div class="block">
+      <h2 id="study-h">What I want to study</h2>
+      <p>How older adults perceive on-screen feedback and remember gestural interfaces, and whether gestures they define themselves are easier to recall than gestures chosen for them.</p>
+    </div>
+    <div class="block">
+      <p>In my thesis I chose every gesture myself, with no way to tell whether an older person could see the feedback clearly or remember the gestures a day later. My thesis ended by recommending that users define their own gestures. That is the question I want to take further.</p>
+      <p class="muted">Longer term, I want to help build HCI research in Nigeria, where older adults rarely take part in studies.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="thesis-h">
+  <h2 id="thesis-h">Thesis: controlling a computer with just a webcam</h2>
+  <p class="muted"><em>Cognitive Vision-Based Hand Gesture Recognition System for Media and Accessibility Control</em></p>
+  <div class="tags">
+    <span class="tag">Nile University of Nigeria, Oct 2025 to Apr 2026</span>
+    <span class="tag">Supervised by Mrs Aisha Lawal</span>
+    <span class="tag">Selected for the faculty thesis exhibition</span>
+    <span class="tag"><a href="docs/Adeola_Kola-Olaleye_Thesis.pdf">Thesis report (PDF)</a></span>
+    <span class="tag"><a href="https://github.com/AdeolaKOD/Cognitive-Vision-Gesture-Control">Code on GitHub</a></span>
+  </div>
+
+  <div class="panel rows">
+    <div class="block split">
+      <div>
+        <h3>Where the idea came from, and how it works</h3>
+        <p>A mouse and keyboard can be tiring or painful for people with limited fine motor control. I wanted to find out whether someone could control a computer with hand gestures alone, using only a webcam and a laptop processor, with no depth sensor or GPU.</p>
+        <p>The system tracks both hands in Python with Google MediaPipe and OpenCV. The right hand sets volume from the gap between thumb and index finger, and brightness from how close the palm is to the camera, using palm size as a stand-in for depth. The left hand plays or pauses with a timed double tap, and skips with a pinch and drag.</p>
+      </div>
+      <figure>
+        <img src="assets/two-hands.jpg" width="874" height="658" alt="Webcam view with both hands raised. Dots and lines mark the tracked hand landmarks; a brightness bar reads 100% and a volume bar reads 48%.">
+        <figcaption>Both hands tracked in one frame. The bars show brightness and volume.</figcaption>
+      </figure>
+    </div>
+
+    <div class="grid-3">
+      <div class="block"><div class="num">35&nbsp;ms</div><p class="muted">Mean latency from gesture to action, under my 50&nbsp;ms limit</p></div>
+      <div class="block"><div class="num">28–30&nbsp;fps</div><p class="muted">In good light, and 15–20 in dim light</p></div>
+      <div class="block"><div class="num">17.8%</div><p class="muted">Average CPU use on a consumer laptop</p></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="block">
+        <h3>What went wrong, and what I changed</h3>
+        <p>In early tests the volume drifted when the lighting changed, because the detected landmarks shifted slightly. I added a clutch: volume only responds while three fingers are folded, so stray movements and small tremors are ignored.</p>
+        <p>My first brightness control used the gap between two fingers and did not work well, so I replaced it with the palm-depth measure. MediaPipe also sometimes labelled the right hand as the left, so I added fallback logic to tell them apart.</p>
+      </div>
+      <div class="block">
+        <h3>How I tested it</h3>
+        <p>I measured latency at each stage of the pipeline and tested the system in dim light and with crossed hands, not only in ideal conditions. All five functional test cases passed.</p>
+        <p>I wrote all of the code, ran the tests and wrote the report, with guidance from my supervisor.</p>
+      </div>
+    </div>
+
+    <div class="block split flip">
+      <figure>
+        <img src="assets/transfer-function.png" width="810" height="640" alt="Scatter plot of calculated volume against thumb–index distance in pixels. Most points follow the dashed intended line, but a second, steeper group rises to 100% at smaller distances.">
+        <figcaption>Recorded volume against thumb–index distance. The dashed line is the mapping I intended.</figcaption>
+      </figure>
+      <div>
+        <h3>What surprised me</h3>
+        <p>Passing tests did not mean the mapping was right. When I plotted the volume the system produced against the mapping I intended, a second, steeper line appeared: the same gesture could give different volumes, most likely because the hand's distance from the camera changes the pixel gap between the fingers.</p>
+        <p>That is when I started caring less about whether a system works and more about whether people can use it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="wrap foot">
+    <span>Adeola Kola-Olaleye, 2026</span>
+    <nav aria-label="Contact">
+      <a href="mailto:inboxadeola@gmail.com">inboxadeola@gmail.com</a>
+      <a href="https://github.com/AdeolaKOD">GitHub</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
