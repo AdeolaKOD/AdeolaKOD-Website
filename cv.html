@@ -3,28 +3,55 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-G0yRoDSqcaFpabi6Xq6kGJVsI0k/VOpowALfZqEZgY4='; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>CV | Adeola Kola-Olaleye</title>
-<meta name="description" content="CV of Adeola Kola-Olaleye.">
-<link rel="icon" href="assets/adeola.jpg">
-<link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css">
+<meta name="description" content="CV of Adeola Kola-Olaleye: education, research experience, projects, work experience and awards.">
+<link rel="canonical" href="https://adeolakod.com/cv">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Adeola Kola-Olaleye">
+<meta property="og:title" content="CV | Adeola Kola-Olaleye">
+<meta property="og:description" content="CV of Adeola Kola-Olaleye: education, research experience, projects, work experience and awards.">
+<meta property="og:url" content="https://adeolakod.com/cv">
+<meta property="og:image" content="https://adeolakod.com/assets/img/adeola.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#F2F2F2">
+<link rel="icon" href="/assets/img/adeola.jpg" type="image/jpeg">
+<link rel="apple-touch-icon" href="/assets/img/adeola.jpg">
+<link rel="preload" href="/assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Runs before first paint. If you change it, update the sha256 in the CSP above or the browser will block it. -->
+<script>
+  (function () {
+    var path = location.pathname;
+    if (/\.html$/.test(path)) {
+      history.replaceState(null, '', path.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    }
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js', 'wait');
+    }
+  })();
+</script>
+<script src="/assets/js/site.js" defer></script>
 </head>
 <body>
 <header class="bar">
   <div class="wrap bar-inner">
-    <a class="navlink brand" href="index.html"><img src="assets/adeola.jpg" width="28" height="28" alt=""><span>Adeola<span class="last"> Kola&#8209;Olaleye</span></span></a>
-    <nav class="menu" aria-label="Main"><a class="navlink" href="research.html">Research</a><a class="navlink" href="projects.html">Projects</a><a class="navlink" href="cv.html" aria-current="page">CV</a></nav>
+    <a class="navlink brand" href="/"><img src="/assets/img/adeola.jpg" width="28" height="28" alt=""><span>Adeola<span class="last"> Kola-Olaleye</span></span></a>
+    <nav class="menu" aria-label="Main"><a class="navlink" href="/research">Research</a><a class="navlink" href="/projects">Projects</a><a class="navlink" href="/cv" aria-current="page">CV</a></nav>
   </div>
 </header>
+
 <main class="wrap">
 
 <section class="page-head">
   <h1>CV</h1>
   <div>
+    <!-- TODO: replace the transcripts with redacted copies. -->
     <div class="actions">
-      <a class="btn btn-dark" href="docs/Adeola_Kola-Olaleye_CV.pdf">Download CV (PDF)</a>
-      <a class="btn btn-line" href="docs/Adeola_Kola-Olaleye_Transcript_Nile.pdf">Nile transcript</a>
-      <a class="btn btn-line" href="docs/Adeola_Kola-Olaleye_Transcript_Pecs.pdf">Pécs transcript</a>
+      <a class="btn btn-dark" href="/docs/Adeola_Kola-Olaleye_CV.pdf">Download CV (PDF)</a>
+      <a class="btn btn-line" href="/docs/Adeola_Kola-Olaleye_Transcript_Nile.pdf">Nile transcript</a>
+      <a class="btn btn-line" href="/docs/Adeola_Kola-Olaleye_Transcript_Pecs.pdf">P&eacute;cs transcript</a>
     </div>
   </div>
 </section>
@@ -46,7 +73,7 @@
     </div>
 
     <h2>Research interests</h2>
-    <div><p style="margin:0">Touchless assistive interfaces, cognitive vision for frustration detection, age-adapted gesture recognition systems, hardware prototyping and signal measurement.</p></div>
+    <div><p>Touchless assistive interfaces, cognitive vision for frustration detection, age-adapted gesture recognition systems, hardware prototyping and signal measurement.</p></div>
 
     <h2>Research experience</h2>
     <div>
@@ -63,9 +90,9 @@
 
     <h2>Projects</h2>
     <div>
-      <div class="item"><p class="item-title">ROS robot controller</p><p style="margin:0">Teleoperation nodes and publisher/subscriber pipelines for a chassis robot on Ubuntu and ROS Noetic, with Arduino integration, a multimeter and a logic analyser. Raspberry Pi 3 Model B, Arduino, CamJam EduKit, Python.</p></div>
-      <div class="item"><p class="item-title">Pathfinding visualisation GUI</p><p style="margin:0">Interactive Pygame visualiser for A*, Dijkstra's algorithm, breadth-first and depth-first search.</p></div>
-      <div class="item"><p class="item-title">Not3s</p><p style="margin:0">Cross-platform note-taking app in Dart and Flutter with real-time backend data synchronisation.</p></div>
+      <div class="item"><p class="item-title">ROS robot controller</p><p>Teleoperation nodes and publisher/subscriber pipelines for a chassis robot on Ubuntu and ROS Noetic, with Arduino integration, a multimeter and a logic analyser. Raspberry Pi 3 Model B, Arduino, CamJam EduKit, Python.</p></div>
+      <div class="item"><p class="item-title">Pathfinding visualisation GUI</p><p>Interactive Pygame visualiser for A*, Dijkstra's algorithm, breadth-first and depth-first search.</p></div>
+      <div class="item"><p class="item-title">Not3s</p><p>Cross-platform note-taking app in Dart and Flutter with real-time backend data synchronisation.</p></div>
     </div>
 
     <h2>Experience</h2>
@@ -98,10 +125,10 @@
 
     <h2>Skills</h2>
     <div>
-      <p><strong style="font-weight:500;color:var(--ink)">Programming:</strong> Python, Dart, C++</p>
-      <p><strong style="font-weight:500;color:var(--ink)">Technical:</strong> Firebase, MySQL, OpenCV, TensorFlow, ROS, Arduino, GPIO interfacing</p>
-      <p><strong style="font-weight:500;color:var(--ink)">Tools:</strong> Git and GitHub, Linux, LaTeX</p>
-      <p style="margin:0"><strong style="font-weight:500;color:var(--ink)">Languages:</strong> English (native), Hungarian (elementary)</p>
+      <p><strong>Programming:</strong> Python, Dart, C++</p>
+      <p><strong>Technical:</strong> Firebase, MySQL, OpenCV, TensorFlow, ROS, Arduino, GPIO interfacing</p>
+      <p><strong>Tools:</strong> Git and GitHub, Linux, LaTeX</p>
+      <p><strong>Languages:</strong> English (native), Hungarian (elementary)</p>
     </div>
 
     <h2>Awards</h2>
@@ -112,6 +139,7 @@
 </section>
 
 </main>
+
 <footer>
   <div class="wrap foot">
     <span>Adeola Kola-Olaleye, 2026</span>
@@ -121,6 +149,5 @@
     </nav>
   </div>
 </footer>
-<script src="assets/site.js"></script>
 </body>
 </html>

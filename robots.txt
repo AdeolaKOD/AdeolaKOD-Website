@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+# Transcripts are for admissions committees, not search results
+Disallow: /docs/Adeola_Kola-Olaleye_Transcript_Nile.pdf
+Disallow: /docs/Adeola_Kola-Olaleye_Transcript_Pecs.pdf
+
+Sitemap: https://adeolakod.com/sitemap.xml

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-G0yRoDSqcaFpabi6Xq6kGJVsI0k/VOpowALfZqEZgY4='; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Page not found | Adeola Kola-Olaleye</title>
+<meta name="description" content="This page does not exist.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F2F2F2">
+<link rel="icon" href="/assets/img/adeola.jpg" type="image/jpeg">
+<link rel="apple-touch-icon" href="/assets/img/adeola.jpg">
+<link rel="preload" href="/assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Runs before first paint. If you change it, update the sha256 in the CSP above or the browser will block it. -->
+<script>
+  (function () {
+    var path = location.pathname;
+    if (/\.html$/.test(path)) {
+      history.replaceState(null, '', path.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    }
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js', 'wait');
+    }
+  })();
+</script>
+<script src="/assets/js/site.js" defer></script>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap bar-inner">
+    <a class="navlink brand" href="/"><img src="/assets/img/adeola.jpg" width="28" height="28" alt=""><span>Adeola<span class="last"> Kola-Olaleye</span></span></a>
+    <nav class="menu" aria-label="Main"><a class="navlink" href="/research">Research</a><a class="navlink" href="/projects">Projects</a><a class="navlink" href="/cv">CV</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="page-head">
+  <h1>Page not found</h1>
+  <div>
+    <p>That page doesn&rsquo;t exist, or it has moved.</p>
+    <div class="actions"><a class="btn btn-dark" href="/">Go to the home page</a></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>Adeola Kola-Olaleye, 2026</span>
+    <nav aria-label="Contact">
+      <a href="mailto:inboxadeola@gmail.com">inboxadeola@gmail.com</a>
+      <a href="https://github.com/AdeolaKOD">GitHub</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

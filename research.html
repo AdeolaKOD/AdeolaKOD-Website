@@ -3,34 +3,61 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-G0yRoDSqcaFpabi6Xq6kGJVsI0k/VOpowALfZqEZgY4='; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Research | Adeola Kola-Olaleye</title>
-<meta name="description" content="Research and thesis of Adeola Kola-Olaleye: touchless, gesture-based interfaces for older adults.">
-<link rel="icon" href="assets/adeola.jpg">
-<link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css">
+<meta name="description" content="Research and undergraduate thesis of Adeola Kola-Olaleye: touchless, gesture-based interfaces for older adults.">
+<link rel="canonical" href="https://adeolakod.com/research">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Adeola Kola-Olaleye">
+<meta property="og:title" content="Research | Adeola Kola-Olaleye">
+<meta property="og:description" content="Research and undergraduate thesis of Adeola Kola-Olaleye: touchless, gesture-based interfaces for older adults.">
+<meta property="og:url" content="https://adeolakod.com/research">
+<meta property="og:image" content="https://adeolakod.com/assets/img/adeola.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#F2F2F2">
+<link rel="icon" href="/assets/img/adeola.jpg" type="image/jpeg">
+<link rel="apple-touch-icon" href="/assets/img/adeola.jpg">
+<link rel="preload" href="/assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Runs before first paint. If you change it, update the sha256 in the CSP above or the browser will block it. -->
+<script>
+  (function () {
+    var path = location.pathname;
+    if (/\.html$/.test(path)) {
+      history.replaceState(null, '', path.replace(/(index)?\.html$/, '') + location.search + location.hash);
+    }
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js', 'wait');
+    }
+  })();
+</script>
+<script src="/assets/js/site.js" defer></script>
 </head>
 <body>
 <header class="bar">
   <div class="wrap bar-inner">
-    <a class="navlink brand" href="index.html"><img src="assets/adeola.jpg" width="28" height="28" alt=""><span>Adeola<span class="last"> Kola&#8209;Olaleye</span></span></a>
-    <nav class="menu" aria-label="Main"><a class="navlink" href="research.html" aria-current="page">Research</a><a class="navlink" href="projects.html">Projects</a><a class="navlink" href="cv.html">CV</a></nav>
+    <a class="navlink brand" href="/"><img src="/assets/img/adeola.jpg" width="28" height="28" alt=""><span>Adeola<span class="last"> Kola-Olaleye</span></span></a>
+    <nav class="menu" aria-label="Main"><a class="navlink" href="/research" aria-current="page">Research</a><a class="navlink" href="/projects">Projects</a><a class="navlink" href="/cv">CV</a></nav>
   </div>
 </header>
+
 <main class="wrap">
 
 <section class="page-head">
   <h1>Research</h1>
 </section>
 
-<section class="narrow">
+<section class="narrow statement-section">
   <p class="statement">My research investigates how touchless, gesture-based interfaces can be designed for older adults, focusing on how they perceive on-screen feedback and how reliably they recall gesture commands over time. My proposed MSc direction compares user-defined and designer-defined gesture sets with adults over 65 under different forms of visual feedback, and evaluates whether letting users define their own gestures reduces the recall cost associated with ageing, measured through accuracy, next-day recall and perceived effort.</p>
 </section>
 
+<!-- TODO: add a Publications section above the thesis once I have one. -->
 <section class="narrow" aria-labelledby="thesis-h">
   <h2 id="thesis-h">Thesis</h2>
   <ol class="list">
     <li>
-      <p class="entry-title"><a href="docs/Adeola_Kola-Olaleye_Thesis.pdf">Cognitive Vision-Based Hand Gesture Recognition System for Media and Accessibility Control</a></p>
+      <p class="entry-title"><a href="/docs/Adeola_Kola-Olaleye_Thesis.pdf">Cognitive Vision-Based Hand Gesture Recognition System for Media and Accessibility Control</a></p>
       <p class="entry-meta">Adeola Kola-Olaleye. Undergraduate thesis, Nile University of Nigeria, 2026. Supervised by Mrs Aisha Lawal. Selected for the faculty thesis exhibition.</p>
       <p class="entry-desc">The thesis asks whether a single consumer webcam, without depth sensors or a GPU, can support continuous, real-time control of a computer through hand gestures, while separating intentional input from noise such as hand tremor.</p>
       <dl class="objectives">
@@ -39,11 +66,13 @@
         <div><dt>Objective 3</dt><dd>Reject unintended input with a folded-finger clutch that gates control and a time-gated double tap for discrete playback commands.</dd></div>
         <div><dt>Objective 4</dt><dd>Benchmark frame rate, end-to-end latency and CPU usage on consumer hardware against a 50&nbsp;ms latency requirement. The system sustained 28&ndash;30&nbsp;FPS with a mean end-to-end latency of 35&nbsp;ms.</dd></div>
       </dl>
-      <p class="entry-links"><a href="docs/Adeola_Kola-Olaleye_Thesis.pdf">PDF</a><a href="https://github.com/AdeolaKOD/Cognitive-Vision-Gesture-Control">Code</a></p>
+      <p class="entry-links"><a href="/docs/Adeola_Kola-Olaleye_Thesis.pdf">PDF</a><a href="https://github.com/AdeolaKOD/Cognitive-Vision-Gesture-Control">Code</a></p>
     </li>
   </ol>
 </section>
+
 </main>
+
 <footer>
   <div class="wrap foot">
     <span>Adeola Kola-Olaleye, 2026</span>
@@ -53,6 +82,5 @@
     </nav>
   </div>
 </footer>
-<script src="assets/site.js"></script>
 </body>
 </html>
