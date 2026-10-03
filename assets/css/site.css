@@ -172,6 +172,7 @@ h3 { font-weight: 500; font-size: 1.05rem; line-height: 1.3; letter-spacing: -0.
 .iso .g { fill: none; stroke: #BDBDBD; stroke-dasharray: 1.5 3.5; }  /* dotted guides */
 .iso .gl { fill: none; stroke: #E2E2E2; }          /* grid lines */
 .iso .v { fill: #F3F3F3; stroke: none; }           /* visited cells */
+.iso .glass { fill: #FFFFFF; fill-opacity: .6; stroke: #B5B5B5; }   /* see-through frames */
 .iso .route { fill: none; stroke: #6E6E6E; stroke-width: 1.4; stroke-dasharray: 600; stroke-dashoffset: 0; }
 .iso .lift { transition: transform .5s var(--ease); }
 .project:hover .iso .lift { transform: translateY(-7px); }
