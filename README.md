@@ -38,6 +38,7 @@ Python's built-in server (`python3 -m http.server`) also works, but you'll need 
 ## Notes to self
 
 - Every page has a Content-Security-Policy that only allows files from this site. The small inline script in each `<head>` is allowed by its sha256 hash, so if I change that script I need to update the hash in the CSP on every page.
+- CSS and JS links end in `?v=...`. When I change `site.css`, `site.js` or `orb.js`, I bump that number on every page so browsers fetch the new file instead of a cached one.
 - The orb colours are set per slide with `data-colors="main,light,deep"` in `index.html`.
 
 ## To do
