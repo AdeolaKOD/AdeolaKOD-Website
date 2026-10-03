@@ -148,11 +148,11 @@
 
   // Then each section, staggering project cards individually
   document.querySelectorAll('main > section:not(.hero):not(.page-head)').forEach(function (sec) {
-    // Sections already on screen follow on from the header; ones below the fold get no delay.
-    // The home page follows on quickly; the other pages take a little longer, which reads calmer.
+    // Sections already on screen start 0.5s in on the home page and 0.35s in elsewhere;
+    // ones below the fold get no delay and reveal as they're scrolled to.
     var home = !!document.querySelector('.hero');
     var onScreen = sec.getBoundingClientRect().top < innerHeight;
-    var base = onScreen ? headDelay + (home ? 250 : 650) : 0;
+    var base = onScreen ? (home ? 500 : 350) : 0;
     var step = home ? 80 : 110;
     Array.prototype.forEach.call(sec.children, function (el, i) {
       var cards = el.querySelectorAll(':scope > .project');

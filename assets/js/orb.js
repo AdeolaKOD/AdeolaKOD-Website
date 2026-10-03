@@ -167,9 +167,8 @@
     }
   }
 
-  // Don't compete with the headline animation on first load: set the orbs up once the page has
-  // loaded and the browser is idle, and only when the carousel is close to the screen
-  // (on phones it starts below the fold, so this often costs nothing at all on load).
+  // Start each orb as soon as this script runs (it's deferred, so the page is already parsed),
+  // but only once the carousel is near the screen. On phones it starts below the fold.
   function whenNear(canvas) {
     if (!('IntersectionObserver' in window)) { start(canvas); return; }
     var io = new IntersectionObserver(function (entries) {
@@ -178,12 +177,5 @@
     io.observe(canvas);
   }
 
-  function init() {
-    var go = function () { document.querySelectorAll('canvas.orb').forEach(whenNear); };
-    if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 800 });
-    else setTimeout(go, 200);
-  }
-
-  if (document.readyState === 'complete') init();
-  else window.addEventListener('load', init);
+  document.querySelectorAll('canvas.orb').forEach(whenNear);
 })();
