@@ -1,0 +1,11 @@
+// Cloudflare deploy settings. The whole site is static files, served straight from this folder.
+{
+  "name": "adeolakod-github-io",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./",
+    // /research serves research.html, and missing pages get 404.html
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}
