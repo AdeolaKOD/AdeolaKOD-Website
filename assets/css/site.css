@@ -71,7 +71,7 @@ section { padding-block: 0 72px; }
 .btn-line:hover { background: var(--panel); }
 .btn-sm { height: 36px; padding-inline: 14px; font-size: 0.9rem; min-width: 108px; }   /* same width side by side */
 /* Little arrow on links that leave the site */
-.btn .ext { width: 12px; height: 12px; margin-left: 6px; transition: transform .2s var(--ease); }
+.btn .ext { width: 12px; height: 12px; margin-left: 3px; transition: transform .2s var(--ease); }
 .btn:hover .ext { transform: translate(1px, -1px); }
 
 
@@ -201,7 +201,7 @@ h3 { font-weight: 500; font-size: 1.05rem; line-height: 1.3; letter-spacing: -0.
 footer { border-top: 1px solid var(--line); }
 .foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; padding-block: 22px; font-size: 0.9rem; color: var(--muted); }
 .foot nav { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-.foot a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); text-decoration: none; transition: color .15s ease; }
+.foot a { display: inline-flex; align-items: center; gap: 3px; color: var(--muted); text-decoration: none; transition: color .15s ease; }
 .foot a:hover { color: var(--ink); }
 .foot .ext { width: 11px; height: 11px; flex: none; transition: transform .2s var(--ease); }
 .foot a:hover .ext { transform: translate(1px, -1px); }
