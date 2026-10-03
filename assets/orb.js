@@ -1,62 +1,52 @@
 (function () {
+  // Liquid glass orbs: a perfect circle on a transparent canvas, filled with slowly flowing colour,
+  // shaded like a sphere (soft highlight, glassy rim, gentle falloff).
   var VERT = 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }';
   var FRAG = [
-    'precision mediump float;',
-    'uniform vec2 uRes; uniform float uTime; uniform vec3 c1; uniform vec3 c2; uniform vec3 c3; uniform float uTile;',
-    'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
-    'float noise(vec2 p){ vec2 i = floor(p); vec2 f = fract(p); vec2 u = f*f*(3.0-2.0*f);',
-    '  return mix(mix(hash(i), hash(i+vec2(1.0,0.0)), u.x), mix(hash(i+vec2(0.0,1.0)), hash(i+vec2(1.0,1.0)), u.x), u.y); }',
-    'float fbm(vec2 p){ float v = 0.0; float a = 0.5; for (int k = 0; k < 5; k++){ v += a*noise(p); p = p*2.03 + vec2(1.7, 9.2); a *= 0.5; } return v; }',
-    'vec3 fluid(vec2 p, float t){',
-    '  vec2 q = vec2(fbm(p + vec2(0.0, t)), fbm(p + vec2(5.2, 1.3) - vec2(t*0.8, 0.0)));',
-    '  vec2 w = vec2(fbm(p + 3.2*q + vec2(1.7, 9.2) + 0.6*t), fbm(p + 3.2*q + vec2(8.3, 2.8) - 0.5*t));',
-    '  float f = fbm(p + 3.0*w);',
-    '  vec3 col = mix(c1, c2, smoothstep(0.25, 0.75, f));',
-    '  return mix(col, c3, smoothstep(0.35, 0.9, length(w) * 0.85) * 0.75);',
-    '}',
-    'void tileMain(){',
-    '  vec2 uv = (gl_FragCoord.xy*2.0 - uRes) / min(uRes.x, uRes.y);',
-    '  float t = uTime * 0.18;',
-    '  float n1 = noise(uv * 0.9 + vec2(t * 0.5, -t * 0.3));',
-    '  float n2 = noise(uv * 0.7 + vec2(-t * 0.4, t * 0.6) + 7.0);',
-    '  vec3 bg = mix(c3, c1, smoothstep(0.15, 0.85, n1));',
-    '  bg = mix(bg, c2, smoothstep(0.45, 0.95, n2) * 0.7);',
-    '  bg = mix(bg, bg * 0.78, smoothstep(0.2, 1.5, length(uv)) * 0.6);',
-    '  vec2 c = vec2(sin(t*0.9)*0.06, cos(t*0.7)*0.05);',
-    '  float r = length(uv - c);',
-    '  float edge = 0.66 + 0.035*sin(atan(uv.y - c.y, uv.x - c.x)*3.0 + t*2.0);',
-    '  float m = 1.0 - smoothstep(edge - 0.06, edge + 0.02, r);',
-    '  vec3 sph = fluid((uv - c) * 1.3, t);',
-    '  float hl = 1.0 - smoothstep(0.0, 0.9, length(uv - c - vec2(-0.22, 0.26)));',
-    '  sph = mix(sph, vec3(1.0), hl * 0.28);',
-    '  sph = mix(sph, sph * 0.82, smoothstep(edge - 0.25, edge, r) * 0.6);',
-    '  float rimL = smoothstep(edge - 0.16, edge - 0.01, r) * m;',
-    '  sph = mix(sph, vec3(1.0), rimL * 0.22);',
-    '  vec3 col = mix(bg, sph, m * 0.9);',
-    '  float g = hash(gl_FragCoord.xy + fract(uTime * 7.0) * 97.0) - 0.5;',
-    '  col += g * 0.07;',
-    '  gl_FragColor = vec4(col, 1.0);',
+    'precision highp float;',
+    'uniform vec2 uRes; uniform float uTime; uniform vec3 c1; uniform vec3 c2; uniform vec3 c3;',
+    'vec2 flow(vec2 p, float t){',
+    '  for (int k = 1; k < 7; k++){',
+    '    float i = float(k);',
+    '    p.x += 0.42 / i * sin(i * 1.7 * p.y + t * 0.9 + 0.3 * i);',
+    '    p.y += 0.38 / i * cos(i * 1.3 * p.x - t * 0.7 + 0.6 * i);',
+    '  }',
+    '  return p;',
     '}',
     'void main(){',
-    '  if (uTile > 0.5) { tileMain(); return; }',
-    '  vec2 uv = (gl_FragCoord.xy*2.0 - uRes) / min(uRes.x, uRes.y);',
+    '  float S = min(uRes.x, uRes.y);',
+    '  vec2 uv = (gl_FragCoord.xy * 2.0 - uRes) / S;',
+    '  uv /= 0.985;',
     '  float r = length(uv);',
-    '  float aa = 2.0 / min(uRes.x, uRes.y);',
-    '  float mask = 1.0 - smoothstep(1.0 - aa*1.5, 1.0, r);',
+    '  float aa = 3.0 / S;',
+    '  float mask = 1.0 - smoothstep(1.0 - aa, 1.0, r);',
     '  if (mask <= 0.0) { gl_FragColor = vec4(0.0); return; }',
-    '  float t = uTime * 0.22;',
-    '  vec2 p = uv * 1.35;',
-    '  float ang = t * 0.35; mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));',
-    '  p = rot * p;',
-    '  vec2 q = vec2(fbm(p + vec2(0.0, t)), fbm(p + vec2(5.2, 1.3) - vec2(t*0.8, 0.0)));',
-    '  vec2 w = vec2(fbm(p + 3.2*q + vec2(1.7, 9.2) + 0.6*t), fbm(p + 3.2*q + vec2(8.3, 2.8) - 0.5*t));',
-    '  float f = fbm(p + 3.0*w);',
-    '  vec3 col = mix(c1, c2, smoothstep(0.25, 0.75, f));',
-    '  col = mix(col, c3, smoothstep(0.35, 0.9, length(w) * 0.85) * 0.75);',
-    '  float hl = 1.0 - smoothstep(0.0, 1.15, length(uv - vec2(-0.38, 0.42)));',
-    '  col = mix(col, vec3(1.0), hl * 0.38);',
-    '  float rim = smoothstep(0.7, 1.0, r);',
-    '  col = mix(col, col * 0.88 + 0.12, rim * 0.6);',
+    '  float z = sqrt(max(0.0, 1.0 - r * r));',
+    '  vec3 n = vec3(uv, z);',
+    '  float t = uTime * 0.35;',
+    // Map through the sphere so the liquid appears to wrap around it
+    '  vec2 sp = uv * (1.25 - 0.35 * z);',
+    '  float a = t * 0.12; sp = mat2(cos(a), -sin(a), sin(a), cos(a)) * sp;',
+    '  vec2 q = flow(sp * 1.6, t);',
+    '  float f1 = 0.5 + 0.5 * sin(q.x * 1.9 + q.y * 0.6);',
+    '  float f2 = 0.5 + 0.5 * cos(q.y * 2.1 - q.x * 0.9 + 1.3);',
+    '  vec3 col = c2;',
+    '  col = mix(col, c1, smoothstep(0.15, 0.85, f1));',
+    '  col = mix(col, c3, smoothstep(0.45, 1.0, f2) * 0.85);',
+    '  col = mix(col, c2, smoothstep(0.7, 1.0, f1 * f2) * 0.6);',
+    // Lighting
+    '  vec3 L = normalize(vec3(-0.45, 0.6, 0.75));',
+    '  float diff = clamp(dot(n, L), 0.0, 1.0);',
+    '  col *= 0.86 + 0.18 * diff;',
+    '  float spec = pow(clamp(dot(reflect(-L, n), vec3(0.0, 0.0, 1.0)), 0.0, 1.0), 18.0);',
+    '  col += vec3(1.0) * spec * 0.32;',
+    '  float soft = 1.0 - smoothstep(0.0, 0.85, length(uv - vec2(-0.32, 0.38)));',
+    '  col = mix(col, vec3(1.0), soft * 0.22);',
+    '  float fres = pow(1.0 - z, 2.6);',
+    '  col = mix(col, vec3(1.0), fres * 0.38);',
+    '  float under = smoothstep(0.2, 1.0, -uv.y * 0.7 + uv.x * 0.25) * (1.0 - fres);',
+    '  col = mix(col, col * 0.86, under * 0.35);',
+    '  col = clamp(col, 0.0, 1.0);',
     '  gl_FragColor = vec4(col * mask, mask);',
     '}'
   ].join('\n');
@@ -67,12 +57,13 @@
   function fallback(c, cols) {
     var d = document.createElement('div');
     d.className = c.className;
+    d.style.borderRadius = '50%';
     d.style.background = 'radial-gradient(circle at 35% 30%, #ffffff 0, ' + cols[1] + ' 30%, ' + cols[0] + ' 65%, ' + cols[2] + ' 100%)';
     c.replaceWith(d);
   }
 
   function start(c) {
-    var cols = (c.getAttribute('data-colors') || '#8CC8FF,#C7B4FF,#FFC9E3').split(',');
+    var cols = (c.getAttribute('data-colors') || '#9FD3FF,#E6F5FF,#4C7BEA').split(',');
     var gl = c.getContext('webgl', { premultipliedAlpha: true, antialias: true, alpha: true });
     if (!gl) { fallback(c, cols); return; }
     function sh(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; }
@@ -85,7 +76,6 @@
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
     var loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     var uRes = gl.getUniformLocation(pr, 'uRes'), uTime = gl.getUniformLocation(pr, 'uTime');
-    gl.uniform1f(gl.getUniformLocation(pr, 'uTile'), c.getAttribute('data-mode') === 'tile' ? 1 : 0);
     ['c1','c2','c3'].forEach(function (n, i) { var v = hex(cols[i] || cols[0]); gl.uniform3f(gl.getUniformLocation(pr, n), v[0], v[1], v[2]); });
     var seed = Math.random() * 100, visible = true, raf = 0;
     function size() {

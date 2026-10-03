@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Research | Adeola Kola-Olaleye</title>
-<meta name="description" content="Research interests, theses and projects of Adeola Kola-Olaleye.">
+<meta name="description" content="Research and thesis of Adeola Kola-Olaleye: touchless, gesture-based interfaces for older adults.">
 <link rel="icon" href="assets/adeola.jpg">
 <link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
@@ -20,26 +20,25 @@
 
 <section class="page-head">
   <h1>Research</h1>
-  <p class="muted">My research interests are in human-computer interaction, particularly how older adults perceive on-screen feedback and remember gestural interfaces.</p>
 </section>
 
-<section class="narrow" aria-labelledby="interests-h">
-  <h2 id="interests-h">Interests</h2>
-  <ul class="plain">
-    <li>Perception of on-screen feedback in ageing users</li>
-    <li>Memorability of gestural interfaces, and user-defined versus designer-defined gestures</li>
-    <li>Touchless and assistive input with ordinary cameras</li>
-    <li>HCI research with older adults in Nigeria</li>
-  </ul>
+<section class="narrow">
+  <p class="statement">My research investigates how touchless, gesture-based interfaces can be designed for older adults, focusing on how they perceive on-screen feedback and how reliably they recall gesture commands over time. My proposed MSc direction compares user-defined and designer-defined gesture sets with adults over 65 under different forms of visual feedback, and evaluates whether letting users define their own gestures reduces the recall cost associated with ageing, measured through accuracy, next-day recall and perceived effort.</p>
 </section>
 
-<section class="narrow" aria-labelledby="work-h">
-  <h2 id="work-h">Theses and projects</h2>
+<section class="narrow" aria-labelledby="thesis-h">
+  <h2 id="thesis-h">Thesis</h2>
   <ol class="list">
     <li>
       <p class="entry-title"><a href="docs/Adeola_Kola-Olaleye_Thesis.pdf">Cognitive Vision-Based Hand Gesture Recognition System for Media and Accessibility Control</a></p>
-      <p class="entry-meta">Adeola Kola-Olaleye. Undergraduate thesis, Nile University of Nigeria, 2026. Supervised by Mrs Aisha Lawal.</p>
-      <p class="entry-desc">A webcam-only system for controlling volume, brightness and media playback with hand gestures, running at a mean latency of 35&nbsp;ms on a laptop CPU. Selected for the faculty thesis exhibition.</p>
+      <p class="entry-meta">Adeola Kola-Olaleye. Undergraduate thesis, Nile University of Nigeria, 2026. Supervised by Mrs Aisha Lawal. Selected for the faculty thesis exhibition.</p>
+      <p class="entry-desc">The thesis asks whether a single consumer webcam, without depth sensors or a GPU, can support continuous, real-time control of a computer through hand gestures, while separating intentional input from noise such as hand tremor.</p>
+      <dl class="objectives">
+        <div><dt>Objective 1</dt><dd>Design a five-layer pipeline (acquisition, pre-processing, inference, logic and actuation) that maps MediaPipe hand landmarks from a standard webcam to Windows controls for volume, display brightness and media playback.</dd></div>
+        <div><dt>Objective 2</dt><dd>Map gesture intensity continuously, using the Euclidean distance between thumb and index-finger landmarks for volume and apparent palm size as a depth proxy for brightness.</dd></div>
+        <div><dt>Objective 3</dt><dd>Reject unintended input with a folded-finger clutch that gates control and a time-gated double tap for discrete playback commands.</dd></div>
+        <div><dt>Objective 4</dt><dd>Benchmark frame rate, end-to-end latency and CPU usage on consumer hardware against a 50&nbsp;ms latency requirement. The system sustained 28&ndash;30&nbsp;FPS with a mean end-to-end latency of 35&nbsp;ms.</dd></div>
+      </dl>
       <p class="entry-links"><a href="docs/Adeola_Kola-Olaleye_Thesis.pdf">PDF</a><a href="https://github.com/AdeolaKOD/Cognitive-Vision-Gesture-Control">Code</a></p>
     </li>
   </ol>
