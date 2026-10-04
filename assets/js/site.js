@@ -1,6 +1,5 @@
 // adeolakod.com
-// Small bits of behaviour shared by every page: the interests carousel, the blur-in reveal,
-// and prefetching the other pages so clicking around feels instant.
+// Small bits of behaviour shared by every page: the interests carousel and the blur-in reveal.
 
 (function () {
   'use strict';
@@ -76,29 +75,6 @@
 
     window.addEventListener('resize', function () { place(true); });
     place(true);
-  });
-
-
-  // ---------- Prefetch the other pages ----------
-
-  function prefetchPages() {
-    var c = navigator.connection;
-    if (c && (c.saveData || /2g/.test(c.effectiveType || ''))) return;
-    var seen = {};
-    document.querySelectorAll('.bar a[href^="/"]').forEach(function (a) {
-      var href = a.getAttribute('href');
-      if (href === location.pathname || seen[href]) return;
-      seen[href] = true;
-      var link = document.createElement('link');
-      link.rel = 'prefetch';
-      link.href = href;
-      document.head.appendChild(link);
-    });
-  }
-
-  window.addEventListener('load', function () {
-    if ('requestIdleCallback' in window) requestIdleCallback(prefetchPages, { timeout: 2000 });
-    else setTimeout(prefetchPages, 1000);
   });
 
 
