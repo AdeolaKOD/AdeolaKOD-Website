@@ -1,7 +1,0 @@
-# Files in the repo that shouldn't be published
-.git
-.gitignore
-.assetsignore
-wrangler.jsonc
-README.md
-LICENSE
