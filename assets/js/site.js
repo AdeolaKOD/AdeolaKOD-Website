@@ -89,7 +89,7 @@
       void card.offsetWidth;   // restart the animation if tapped again
       card.classList.add('play');
       clearTimeout(timer);
-      timer = setTimeout(function () { card.classList.remove('play'); }, 1800);
+      timer = setTimeout(function () { card.classList.remove('play'); }, 3200);   // long enough for the whole wave
     });
   });
 
