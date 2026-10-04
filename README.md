@@ -14,7 +14,7 @@ cv.html             CV, with the PDF and transcript
 404.html            shown for any missing page
 assets/
   css/site.css      all the styles
-  js/site.js        carousel, blur-in reveal, prefetching the other pages
+  js/site.js        carousel and blur-in reveal
   js/orb.js         the WebGL orbs on the home page
   fonts/            Geist (subset to Latin) and its licence
   img/adeola.jpg    profile photo, also used as the favicon
