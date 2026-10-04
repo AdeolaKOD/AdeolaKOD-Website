@@ -177,8 +177,8 @@ h3 { font-weight: 500; font-size: 1.05rem; line-height: 1.3; letter-spacing: -0.
 .iso .gl { fill: none; stroke: #E2E2E2; }          /* grid lines */
 .iso .v { fill: #F3F3F3; stroke: none; }           /* visited cells */
 .iso .route { fill: none; stroke: #6E6E6E; stroke-width: 1.4; stroke-dasharray: 600; stroke-dashoffset: 0; }
-/* Hover (or tap on a phone) brings each drawing to life with a wave: each part marked "bob" rises and
-   settles back, then the next one goes, so the motion travels through the drawing.
+/* Each drawing plays a wave: each part marked "bob" rises and settles back, then the next one goes,
+   so the motion travels through the drawing.
    kN is a part's place in the wave, w-* sets the gap between parts, tN how far each part rises. */
 .iso .bob { --k: 0; --step: .2s; --ty: -8px; }
 .iso .k1 { --k: 1; } .iso .k2 { --k: 2; } .iso .k3 { --k: 3; } .iso .k4 { --k: 4; }
@@ -281,20 +281,18 @@ footer { border-top: 1px solid var(--line); }
 .js .blur-in.quick { transition-duration: .55s; transition-delay: 0ms; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .project.play .iso .route { animation: trace 1.4s cubic-bezier(.4, 0, .2, 1); }
-  .project.play .iso .flow path { animation: march .8s linear infinite; }
-  @media (hover: hover) {
-    .project:hover .iso .route { animation: trace 1.4s cubic-bezier(.4, 0, .2, 1); }
-    .project:hover .iso .flow path { animation: march .8s linear infinite; }
-  }
-  /* One 1.8s cycle: a part spends the first third rising and settling, then waits for the rest of the wave.
-     It loops while the pointer stays on the card; a tap on a phone plays it once. */
-  .project.play .iso .bob { animation: wave 1.8s ease-in-out calc(var(--k) * var(--step)) 1 both; }
-  @media (hover: hover) { .project:hover .iso .bob { animation: wave 1.8s ease-in-out calc(var(--k) * var(--step)) infinite both; } }
+  /* The project drawings animate on their own, all the time.
+     Wave: in each 1.8s cycle a part spends the first third rising and settling, then waits for the rest. */
+  .iso .bob { animation: wave 1.8s ease-in-out calc(var(--k) * var(--step)) infinite both; }
   @keyframes wave { 0%, 34%, 100% { transform: none; } 17% { transform: translateY(var(--ty)); } }
-  @keyframes trace { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
   /* the dotted links between ROS nodes "carry messages" */
+  .iso .flow path { animation: march .8s linear infinite; }
   @keyframes march { to { stroke-dashoffset: -10; } }
+  /* the pathfinding route draws itself, holds, then draws again */
+  .iso .route { animation: trace 3.2s cubic-bezier(.4, 0, .2, 1) infinite; }
+  @keyframes trace { 0% { stroke-dashoffset: 600; } 55%, 100% { stroke-dashoffset: 0; } }
+  /* site.js pauses drawings that are off screen, to save battery */
+  .fig.paused .bob, .fig.paused .flow path, .fig.paused .route { animation-play-state: paused; }
 }
 
 @media (prefers-reduced-motion: reduce) {

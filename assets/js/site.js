@@ -79,19 +79,14 @@
   });
 
 
-  // ---------- Project drawings on touch screens ----------
-  // Phones have no hover, so a tap on a project card plays its drawing's animation instead.
-  document.querySelectorAll('.project').forEach(function (card) {
-    var timer;
-    card.addEventListener('pointerdown', function (e) {
-      if (e.pointerType === 'mouse' || e.target.closest('a')) return;
-      card.classList.remove('play');
-      void card.offsetWidth;   // restart the animation if tapped again
-      card.classList.add('play');
-      clearTimeout(timer);
-      timer = setTimeout(function () { card.classList.remove('play'); }, 3200);   // long enough for the whole wave
+  // ---------- Project drawings ----------
+  // They animate all the time; pause the ones that are off screen so phones don't burn battery.
+  if ('IntersectionObserver' in window) {
+    var figIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.target.classList.toggle('paused', !e.isIntersecting); });
     });
-  });
+    document.querySelectorAll('.fig').forEach(function (fig) { figIO.observe(fig); });
+  }
 
 
   // ---------- Prefetch the other pages ----------
