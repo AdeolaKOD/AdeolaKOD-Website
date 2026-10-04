@@ -79,6 +79,21 @@
   });
 
 
+  // ---------- Project drawings on touch screens ----------
+  // Phones have no hover, so a tap on a project card plays its drawing's animation instead.
+  document.querySelectorAll('.project').forEach(function (card) {
+    var timer;
+    card.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' || e.target.closest('a')) return;
+      card.classList.remove('play');
+      void card.offsetWidth;   // restart the animation if tapped again
+      card.classList.add('play');
+      clearTimeout(timer);
+      timer = setTimeout(function () { card.classList.remove('play'); }, 1800);
+    });
+  });
+
+
   // ---------- Prefetch the other pages ----------
 
   function prefetchPages() {
