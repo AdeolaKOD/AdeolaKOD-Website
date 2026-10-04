@@ -89,27 +89,59 @@
   }
 
 
-  // ---------- Prefetch the other pages ----------
+  // ---------- Load the other pages before they're clicked ----------
+  // Chrome, Edge, Android: speculation rules. The nav pages are fetched straight away, and whichever
+  // link you hover (or start tapping) gets fully built in the background, so the click is instant.
+  // Firefox only does <link rel="prefetch">. Safari does neither, so it gets a plain fetch that
+  // leaves the pages in the cache.
 
-  function prefetchPages() {
-    var c = navigator.connection;
-    if (c && (c.saveData || /2g/.test(c.effectiveType || ''))) return;
-    var seen = {};
-    document.querySelectorAll('.bar a[href^="/"]').forEach(function (a) {
-      var href = a.getAttribute('href');
-      if (href === location.pathname || seen[href]) return;
-      seen[href] = true;
-      var link = document.createElement('link');
-      link.rel = 'prefetch';
-      link.href = href;
-      document.head.appendChild(link);
+  var conn = navigator.connection;
+  var skipPreload = conn && (conn.saveData || /2g/.test(conn.effectiveType || ''));
+
+  var navPages = [];
+  document.querySelectorAll('.bar a[href^="/"]').forEach(function (a) {
+    var href = a.getAttribute('href');
+    if (href !== location.pathname && navPages.indexOf(href) < 0) navPages.push(href);
+  });
+
+  var hasSpeculation = window.HTMLScriptElement && HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules');
+
+  // Prefetch every top-bar link straight away; fully build any on-site link on hover or tap,
+  // except the PDFs and the page you're already on (marked aria-current).
+  // This string must be the same on every page: the CSP allows it by its sha256 hash
+  // ('inline-speculation-rules' gets ignored once a CSP has hashes). Change it, update the hash.
+  var RULES = '{"prefetch":[{"where":{"selector_matches":".bar a:not([aria-current])"},"eagerness":"immediate"}],' +
+    '"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/docs/*"}},{"not":{"selector_matches":"[aria-current]"}}]},"eagerness":"moderate"}]}';
+
+  if (!skipPreload && hasSpeculation) {
+    window.addEventListener('load', function () {
+      var rules = document.createElement('script');
+      rules.type = 'speculationrules';
+      rules.textContent = RULES;
+      document.head.appendChild(rules);
     });
   }
 
-  window.addEventListener('load', function () {
-    if ('requestIdleCallback' in window) requestIdleCallback(prefetchPages, { timeout: 2000 });
-    else setTimeout(prefetchPages, 1000);
-  });
+  function prefetchPages() {
+    var probe = document.createElement('link');
+    if (probe.relList && probe.relList.supports && probe.relList.supports('prefetch')) {
+      navPages.forEach(function (href) {
+        var link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = href;
+        document.head.appendChild(link);
+      });
+    } else if (window.fetch) {
+      navPages.forEach(function (href) { fetch(href, { credentials: 'same-origin' }).catch(function () {}); });
+    }
+  }
+
+  if (!skipPreload && !hasSpeculation) {
+    window.addEventListener('load', function () {
+      if ('requestIdleCallback' in window) requestIdleCallback(prefetchPages, { timeout: 2000 });
+      else setTimeout(prefetchPages, 600);
+    });
+  }
 
 
   // ---------- Blur-in reveal ----------
@@ -210,10 +242,17 @@
   }
 
   // Wait for Geist so the headline doesn't reflow mid-animation, but never longer than 1.2s.
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(start);
-    setTimeout(start, 1200);
-  } else {
-    start();
+  function begin() {
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(start);
+      setTimeout(start, 1200);
+    } else {
+      start();
+    }
   }
+
+  // If Chrome built this page ahead of time, hold the reveal until it's actually opened,
+  // otherwise it plays out in the background and you'd land on a page that's already finished.
+  if (document.prerendering) document.addEventListener('prerenderingchange', begin, { once: true });
+  else begin();
 })();

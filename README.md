@@ -14,7 +14,7 @@ cv.html             CV, with the PDF and transcript
 404.html            shown by GitHub Pages for any missing page
 assets/
   css/site.css      all the styles
-  js/site.js        carousel, blur-in reveal, prefetching the other pages
+  js/site.js        carousel, blur-in reveal, preloading the other pages (speculation rules, prefetch fallback)
   js/orb.js         the WebGL orbs on the home page
   fonts/            Geist (subset to Latin) and its licence
   img/adeola.jpg    profile photo, also used as the favicon
@@ -37,7 +37,7 @@ Python's built-in server (`python3 -m http.server`) also works, but you'll need 
 
 ## Notes to self
 
-- Every page has a Content-Security-Policy that only allows files from this site. The small inline script in each `<head>` is allowed by its sha256 hash, so if I change that script I need to update the hash in the CSP on every page.
+- Every page has a Content-Security-Policy that only allows files from this site. The small inline script in each `<head>` is allowed by its sha256 hash, so if I change that script I need to update the hash in the CSP on every page. The second hash is for the speculation rules that site.js adds to preload pages (the `RULES` string), so the same goes for that.
 - CSS and JS links end in `?v=...`. When I change `site.css`, `site.js` or `orb.js`, I bump that value on every page so browsers fetch the new file instead of a cached one.
 - The orb colours are set per slide with `data-colors="main,light,deep"` in `index.html`.
 

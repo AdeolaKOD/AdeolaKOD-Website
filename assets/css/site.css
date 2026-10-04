@@ -50,8 +50,9 @@ section { padding-block: 0 72px; }
 /* Only the grey box grows on hover. Scaling the link itself made the text go blurry mid-animation. */
 .navlink::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--hover); opacity: 0; transform: scale(0.96); transition: opacity .18s ease, transform .22s var(--ease); }
 .navlink:hover::before { opacity: 1; transform: scale(1.07, 1.1); }
-.navlink[aria-current="page"]::before { opacity: 1; transform: none; }
-.navlink[aria-current="page"]:hover::before { transform: scale(1.07, 1.1); }
+/* Only the menu shows the current page. The name link is also marked current on the home page (site.js uses that) but stays plain. */
+.menu .navlink[aria-current="page"]::before { opacity: 1; transform: none; }
+.menu .navlink[aria-current="page"]:hover::before { transform: scale(1.07, 1.1); }
 
 .brand { margin-left: -12px; font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em; }
 .brand img { width: 28px; height: 28px; object-fit: cover; display: block; }
