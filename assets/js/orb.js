@@ -1,7 +1,7 @@
 // adeolakod.com
 // The orbs on the home page. Each <canvas class="orb" data-colors="a,b,c"> gets its own small
-// WebGL shader: a soft, grainy ball of slowly flowing colour sitting inside a square of the same
-// colours, washed out so the square stays in the background.
+// WebGL shader: a soft, grainy ball of slowly flowing colour sitting inside a darker square of the
+// same colours, with a pale rim where the light catches its edge.
 // Loosely inspired by the orbs on elevenlabs.io.
 
 (function () {
@@ -29,10 +29,10 @@
 
     vec3 field(vec2 p, float t) {
       vec2 q = flow(p, t);
-      float f1 = 0.5 + 0.5 * sin(q.x * 1.9 + q.y * 0.6);
-      float f2 = 0.5 + 0.5 * cos(q.y * 2.1 - q.x * 0.9 + 1.3);
-      vec3 col = mix(c2, c1, smoothstep(0.05, 0.95, f1));
-      return mix(col, c3, smoothstep(0.35, 1.0, f2) * 0.8);
+      float f1 = 0.5 + 0.5 * sin(q.x * 1.2 + q.y * 0.5);
+      float f2 = 0.5 + 0.5 * cos(q.y * 1.3 - q.x * 0.7 + 1.3);
+      vec3 col = mix(c3, c1, smoothstep(0.0, 1.0, f1));
+      return mix(col, c2, smoothstep(0.55, 1.0, f2) * 0.55);
     }
 
     void main() {
@@ -40,33 +40,35 @@
       vec2 uv = (gl_FragCoord.xy * 2.0 - uRes) / S;   // -1..1 across the square
       float t = uTime * 0.35;
 
-      // Square backdrop: same colours, slower and paler
-      vec3 bg = field(uv * 0.8 + vec2(3.1, 1.7), t * 0.6);
-      bg = mix(bg, vec3(1.0), 0.45);
-      bg = mix(bg, bg * 0.92, smoothstep(0.7, 1.6, length(uv)));
+      // Square backdrop: the same colours at full strength, slower, darker and very soft
+      vec3 bg = field(uv * 0.55 + vec2(3.1, 1.7), t * 0.5);
+      bg = mix(bg, c3, 0.15) * 0.82;
+      bg *= 1.0 - 0.22 * smoothstep(0.5, 1.5, length(uv));
 
-      // The orb itself. z fakes a sphere so the colour seems to wrap round it.
-      float R = 0.72;
-      float r = length(uv) / R;
+      // The orb. z fakes a sphere so the colour seems to wrap round it.
+      float R = 0.86;
+      vec2 n2 = uv / R;
+      float r = length(n2);
       float rc = min(r, 1.0);
       float z = sqrt(max(0.0, 1.0 - rc * rc));
-      vec2 sp = (uv / R) * (1.25 - 0.35 * z);
+      vec2 sp = n2 * (1.3 - 0.4 * z);
       float a = t * 0.12;
       sp = mat2(cos(a), -sin(a), sin(a), cos(a)) * sp;
-      vec3 orb = field(sp * 1.6, t);
+      vec3 orb = field(sp * 0.95, t);
 
-      // Very gentle lighting. Kept matte on purpose, the glossy version looked like glass.
-      vec3 L = normalize(vec3(-0.45, 0.6, 0.75));
-      orb *= 0.9 + 0.14 * clamp(dot(vec3(uv / R, z), L), 0.0, 1.0);
-      orb = mix(orb, vec3(1.0), (1.0 - smoothstep(0.0, 0.9, length(uv / R - vec2(-0.35, 0.4)))) * 0.1);
-      orb = mix(orb, orb * 0.92, smoothstep(0.55, 1.0, r));
+      // Soft light from the top left, a pale rim catching light at the lower left
+      vec3 N = vec3(n2, z);
+      orb *= 0.82 + 0.3 * clamp(dot(N, normalize(vec3(-0.4, 0.55, 0.75))), 0.0, 1.0);
+      float fres = pow(1.0 - z, 2.5);
+      float side = 0.45 + 0.55 * clamp(dot(normalize(n2 + 1e-4), normalize(vec2(-0.7, -0.6))), 0.0, 1.0);
+      orb = mix(orb, c2, fres * side * 0.45);
 
-      float inside = 1.0 - smoothstep(0.93, 1.04, r);        // feathered edge
-      float halo = exp(-pow(max(r - 1.0, 0.0) * 2.6, 2.0)) * (1.0 - inside);
-      bg = mix(bg, mix(c1, vec3(1.0), 0.35), halo * 0.22);
+      float inside = 1.0 - smoothstep(0.975, 1.01, r);      // soft but readable edge
+      float shade = exp(-pow(max(r - 1.0, 0.0) * 5.0, 2.0)) * (1.0 - inside);
+      bg *= 1.0 - 0.14 * shade;                              // faint contact shadow round the ball
 
       vec3 col = mix(bg, orb, inside);
-      col += (hash(floor(gl_FragCoord.xy)) - 0.5) * 0.07;   // film grain
+      col += (hash(floor(gl_FragCoord.xy)) - 0.5) * 0.13;   // heavy film grain
       gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
     }
   `;
