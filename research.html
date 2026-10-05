@@ -22,7 +22,7 @@
 <link rel="icon" href="/assets/img/adeola.jpg" type="image/jpeg">
 <link rel="apple-touch-icon" href="/assets/img/adeola.jpg">
 <link rel="preload" href="/assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css?v=20261005a">
+<link rel="stylesheet" href="/assets/css/site.css?v=20261005b">
 <!-- Runs before first paint. If you change it, update the sha256 in the CSP above or the browser will block it. -->
 <script>
   (function () {
@@ -48,7 +48,7 @@
     }
   })();
 </script>
-<script src="/assets/js/site.js?v=20261005a" defer fetchpriority="high"></script>
+<script src="/assets/js/site.js?v=20261005b" defer fetchpriority="high"></script>
 </head>
 <body>
 <header class="bar">
@@ -64,11 +64,6 @@
   <h1>Research</h1>
 </section>
 
-<section class="narrow statement-section">
-  <p class="statement">Touchless, gesture-based interfaces offer no visible affordances. Each command must be recalled from memory and performed in mid-air, and feedback is the only sign that it worked. For older adults, age-related declines in working memory, processing speed and contrast sensitivity raise this cognitive cost. My research asks how gesture vocabularies and their feedback can be designed so that older adults learn them quickly and retain them over time.</p>
-  <p class="statement">My proposed MSc study compares user-defined gesture sets, elicited from adults aged 65 and over, with designer-defined sets under contrasting forms of visual feedback, including feedforward that previews a gesture&rsquo;s outcome before it completes. Outcomes are recognition accuracy, immediate and 24-hour recall, and subjective workload (NASA-TLX), with set size varied to measure how recall degrades as the vocabulary grows.</p>
-</section>
-
 <!-- TODO: add a Publications section above the thesis once I have one. -->
 <section class="narrow" aria-labelledby="thesis-h">
   <h2 id="thesis-h">Thesis</h2>
@@ -77,14 +72,11 @@
       <p class="entry-title"><a href="/docs/Adeola_Kola-Olaleye_Thesis.pdf" target="_blank" rel="noopener">Cognitive Vision-Based Hand Gesture Recognition System for Media and Accessibility Control</a></p>
       <p class="entry-meta">Adeola Kola-Olaleye. Undergraduate thesis, Nile University of Nigeria, 2026. Supervised by Mrs Aisha Lawal.</p>
       <h3 class="entry-sub">Abstract</h3>
-      <p class="entry-desc">Conventional pointing devices require users to translate movement on a horizontal desk plane into cursor movement on a vertical display, and assume fine motor control that many users with motor impairments lack. This thesis presents a real-time, bimanual gesture interface that controls system volume, display brightness and media playback without physical contact. MediaPipe hand-landmark inference runs entirely on a consumer CPU, and hand geometry is mapped directly to continuous controls: thumb&ndash;index distance sets volume, apparent palm size acts as a depth proxy for brightness, and the other hand issues discrete playback commands. A folded-finger clutch and a time-gated double tap separate intentional gestures from tremor and incidental movement. Grounded in cognitive load theory and embodied interaction, the design maps each physical action to a single digital action. In evaluation, the system sustained 28&ndash;30&nbsp;FPS with a mean end-to-end latency of 35&nbsp;ms, within a 50&nbsp;ms real-time requirement, with all processing on-device. Performance degrades in low light and against backgrounds close to skin tone; future work proposes user-defined gesture mappings for users with motor restrictions.</p>
-      <h3 class="entry-sub">Research question</h3>
-      <p class="entry-desc">Can monocular hand-landmark tracking on a consumer CPU support continuous, low-latency system control while reliably rejecting unintended input such as tremor?</p>
+      <p class="entry-desc">This project discusses a real-time cognitive vision system for gesture based media control by leveraging webcam based hand and finger tracking. The goal of the system is enhancing access, and interaction for those with physical disabilities by providing touch-free control to media actions like: volume adjustments, screen brightness control, play and pause. By utilizing computer vision and low-power machine learning models, the system decodes finger landmarks from a conventional webcam in real time for high accuracy continuous gesture recognition with low latency. Continuous scale-volumes are associated with (e.g.) the distance between thumb and index-finger, conveying properties like size or amount of an item, and finite control-expression templates corresponding to postures on the hand. The system was planned to be able to perform steadily and in realtime at rates of 30-60 FPS, and remain robust with performance reduction as a result of different users and the variation in lighting conditions. This study contributes to the area of cognitive HCI by offering an inexpensive interactive camera-based assistive technique, which goes beyond normal conventional input interactions. This project will display the combination of computer vision and cognitive modeling.</p>
       <dl class="objectives">
-        <div><dt>Objective 1</dt><dd>Architect a five-layer pipeline (acquisition, pre-processing, inference, logic and actuation) that maps 21-point MediaPipe hand landmarks to OS-level controls: WASAPI audio, DDC/CI display brightness and media transport.</dd></div>
-        <div><dt>Objective 2</dt><dd>Derive continuous control signals from hand geometry, using thumb&ndash;index Euclidean distance for volume and apparent palm size as a monocular depth (z-axis) proxy for brightness, linearly interpolated into each control range.</dd></div>
-        <div><dt>Objective 3</dt><dd>Separate intentional input from noise with a folded-finger clutch that gates control and a time-gated double tap for discrete commands, suppressing false activations from tremor and incidental motion.</dd></div>
-        <div><dt>Objective 4</dt><dd>Evaluate real-time performance against non-functional requirements (latency under 50&nbsp;ms, above 20&nbsp;FPS with bimanual tracking) through per-layer latency profiling, frame-rate stability and CPU utilisation. The system sustained 28&ndash;30&nbsp;FPS at a mean end-to-end latency of 35&nbsp;ms.</dd></div>
+        <div><dt>Objective 1</dt><dd>Design of system: To design the Cognitive Vision-Based Hand Gesture system.</dd></div>
+        <div><dt>Objective 2</dt><dd>Implementation of system: To define an algorithm that calculates the Euclidean distance between nodal key points to determine gesture intensity.</dd></div>
+        <div><dt>Objective 3</dt><dd>Performance Benchmarking: To validate the system performance of the application by quantifying the FPS (frames per second), latency (ms) and system resources (CPU) usage.</dd></div>
       </dl>
       <p class="entry-links"><a href="/docs/Adeola_Kola-Olaleye_Thesis.pdf" target="_blank" rel="noopener">PDF</a><a href="https://github.com/AdeolaKOD/Cognitive-Vision-Gesture-Control">Code</a></p>
     </li>
