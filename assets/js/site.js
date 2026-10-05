@@ -7,6 +7,16 @@
 
   var root = document.documentElement;
 
+  // Email links marked to open in a new tab. Browsers that hand mailto: to Gmail in the browser
+  // ignore target="_blank" and replace the site, so open the link in a new tab ourselves.
+  document.querySelectorAll('a[href^="mailto:"][target="_blank"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      e.preventDefault();
+      window.open(a.href, '_blank', 'noopener');
+    });
+  });
+
   // ---------- Interests carousel (home page) ----------
 
   document.querySelectorAll('[data-carousel]').forEach(function (car) {
