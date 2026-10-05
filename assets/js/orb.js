@@ -19,8 +19,17 @@
 
     float blob(vec2 p, vec2 c, float r) { vec2 d = p - c; return exp(-dot(d, d) / (r * r)); }
 
-    vec2 warp(vec2 p, float t) { return p + 0.1 * vec2(sin(p.y * 2.3 + t * 0.9), cos(p.x * 2.1 - t * 0.7)); }
-    vec2 drift(float t, float k) { return 0.2 * vec2(sin(t * (0.31 + 0.07 * k) + k * 1.7), cos(t * (0.27 + 0.05 * k) + k * 2.3)); }
+    // Layers of sines push the coordinates around, so the colours flow like liquid rather than slide
+    vec2 warp(vec2 p, float t) {
+      for (int k = 1; k < 5; k++) {
+        float i = float(k);
+        p.x += 0.22 / i * sin(i * 1.6 * p.y + t * 0.8 + 0.4 * i);
+        p.y += 0.20 / i * cos(i * 1.4 * p.x - t * 0.7 + 0.7 * i);
+      }
+      return p;
+    }
+    // Each colour cloud also wanders on its own slow loop
+    vec2 drift(float t, float k) { return 0.32 * vec2(sin(t * (0.45 + 0.08 * k) + k * 1.7), cos(t * (0.38 + 0.06 * k) + k * 2.3)); }
 
     // What you see through the ball: mostly the main colour, with the second colour round one side,
     // the deep colour pooling at the bottom and a pale glow at the top left.
@@ -49,17 +58,17 @@
     void main() {
       float S = min(uRes.x, uRes.y);
       vec2 uv = (gl_FragCoord.xy * 2.0 - uRes) / S;   // -1..1 across the square
-      float t = uTime * 0.6;
+      float t = uTime * 0.7;
 
       vec3 bg = outer(uv, t);
 
       // A glass ball almost as big as the square, read by what is inside it and a faint rim
-      vec2 ctr = vec2(0.04, -0.03);
-      float R = 0.98;
+      vec2 ctr = vec2(0.0);
+      float R = 0.9;   // the whole ball stays inside the square
       vec2 n = (uv - ctr) / R;
       float r = length(n);
       float z = sqrt(max(0.0, 1.0 - min(r, 1.0) * min(r, 1.0)));
-      float a = t * 0.04;
+      float a = t * 0.12;   // the view through the ball slowly turns
       vec2 q = mat2(cos(a), -sin(a), sin(a), cos(a)) * n * (0.92 + 0.1 * (1.0 - z));
       vec3 orb = inner(q, t);
       orb *= 0.93 + 0.1 * clamp(dot(vec3(n, z), normalize(vec3(-0.4, 0.5, 0.8))), 0.0, 1.0);
