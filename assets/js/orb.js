@@ -47,22 +47,31 @@
       vec2 p = n * (1.0 + 0.45 * (1.0 - z)) * 0.6;
       float t = uTime * 0.22;
 
-      // Domain warping: each layer of noise bends the next, which gives slow, folding,
-      // viscous shapes instead of smooth bands
-      // Every layer drifts upward through the noise, so the liquid pours down across the ball
+      // A wave field: travelling waves from several directions, some opposing, add up and
+      // interfere. It ripples the whole surface so the liquids keep crashing into each other.
+      vec2 wave = vec2(
+        sin(3.0 * p.y + 1.4 * t) + sin(2.2 * (p.x + p.y) - 1.8 * t) + 0.6 * sin(4.1 * p.x + 2.3 * t),
+        cos(2.6 * p.x - 1.2 * t) + sin(2.8 * (p.x - p.y) + 1.6 * t) + 0.6 * cos(3.7 * p.y - 2.1 * t));
+      p += 0.10 * wave;
+
+      // Two streams of liquid: one pours down across the ball, the other wells up against it.
+      // Each is domain-warped noise (noise bending noise), which keeps the shapes thick and folding.
       vec2 down = vec2(0.0, t);
-      vec2 q = vec2(fbm(p + vec2(0.0, 0.0) + 0.55 * down),
-                    fbm(p + vec2(5.2, 1.3) + 0.45 * down));
+      vec2 q = vec2(fbm(p + 0.55 * down), fbm(p + vec2(5.2, 1.3) + 0.45 * down));
       vec2 w = vec2(fbm(p + 1.8 * q + vec2(1.7, 9.2) + 0.75 * down),
                     fbm(p + 1.8 * q + vec2(8.3, 2.8) + 0.65 * down));
-      float f = fbm(p + 1.6 * w + 0.40 * down);
-      float g = fbm(p + 1.6 * w + 0.40 * down + vec2(0.07, 0.07));   // a step away, for the sheen on the folds
+      float f = fbm(p + 1.6 * w + 0.40 * down);                     // falling stream
+      float g = fbm(p + 1.6 * w + 0.40 * down + vec2(0.07, 0.07));  // a step away, for the sheen on the folds
+      float u = fbm(p + 1.4 * w.yx + vec2(3.3, 7.7) - 0.50 * down); // rising stream
 
-      // Two or three colours carry the ball; the deep, accent and light ones only touch it
-      vec3 col = mix(c1, c2, smoothstep(0.36, 0.60, f));
-      col = mix(col, c3, smoothstep(0.55, 1.05, length(q) * f * 1.6) * 0.75);
-      col = mix(col, c4, smoothstep(0.58, 0.90, w.x) * 0.5);
-      col = mix(col, c5, smoothstep(0.62, 0.95, w.y) * 0.40);
+      // Every colour belongs to a stream, so where the streams meet, all of them collide
+      vec3 col = mix(c1, c2, smoothstep(0.38, 0.62, f));
+      col = mix(col, c3, smoothstep(0.52, 0.78, u) * 0.80);
+      col = mix(col, c4, smoothstep(0.55, 0.85, w.x * 0.6 + (1.0 - u) * 0.6) * 0.55);
+      col = mix(col, c5, smoothstep(0.62, 0.92, w.y * 0.5 + f * 0.6) * 0.45);
+      // a thin bright seam where the two streams crash into each other
+      float seam = 1.0 - smoothstep(0.0, 0.06, abs(f - u));
+      col = mix(col, mix(c5, vec3(1.0), 0.3), seam * 0.18);
 
       // Silk-like light and shadow along the folds of the liquid
       col *= 1.0 + clamp((g - f) * 4.0, -0.16, 0.16);
