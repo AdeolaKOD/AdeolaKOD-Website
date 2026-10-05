@@ -30,25 +30,37 @@
       return p;
     }
 
+    // The five colours in a loop, ordered so neighbours blend cleanly:
+    // main -> light -> second -> deep -> warm dark -> back to main.
+    vec3 stop(float i) {
+      if (i < 0.5) return c1;
+      if (i < 1.5) return c5;
+      if (i < 2.5) return c2;
+      if (i < 3.5) return c3;
+      return c4;
+    }
+    vec3 ramp(float x) {
+      x = fract(x) * 5.0;
+      float i = floor(x);
+      float f = smoothstep(0.18, 0.82, fract(x));   // each colour holds its ground, then melts into the next
+      return mix(stop(i), stop(mod(i + 1.0, 5.0)), f);
+    }
+
+    // Bands of all five colours, folded through each other by the liquid, so every colour
+    // keeps running into every other one
     vec3 paint(vec3 q) {
-      float f1 = 0.5 + 0.5 * sin(q.x * 1.3 + q.y * 0.4);
-      float f2 = 0.5 + 0.5 * sin(q.y * 1.2 - q.z * 0.7 + 1.0);
-      float f3 = 0.5 + 0.5 * sin(q.z * 1.4 + q.x * 0.5 + 2.2);
-      // Each colour only flows into the ones it sits well with, so the blends stay clean
-      float m2 = smoothstep(0.50, 0.66, f1);
-      vec3 col = mix(c1, c2, m2);
-      col = mix(col, c4, smoothstep(0.70, 0.95, f3) * 0.45 * (1.0 - m2));   // warm dark through the main colour
-      col = mix(col, c3, smoothstep(0.72, 0.98, f2) * 0.60 * m2);           // deep colour pooling in the second
-      vec3 glow = c5 * smoothstep(0.45, 1.00, f1 * f3) * 0.55;
-      col = 1.0 - (1.0 - col) * (1.0 - glow);                                 // light veins, added like light
-      col = mix(vec3(dot(col, vec3(0.299, 0.587, 0.114))), col, 1.2);
+      float x = 0.22 * (q.x * 1.1 + q.y * 0.8 - q.z * 0.6) + 0.12 * sin(q.z * 1.7 + q.x * 0.9);
+      vec3 col = ramp(x);
+      float sheen = 0.5 + 0.5 * sin(q.y * 2.3 - q.x * 1.4);
+      col = mix(col, ramp(x + 0.2), smoothstep(0.75, 1.0, sheen) * 0.35);   // streaks of a second colour within each band
+      col = mix(vec3(dot(col, vec3(0.299, 0.587, 0.114))), col, 1.25);     // rich, never chalky
       return col;
     }
 
     void main() {
       float S = min(uRes.x, uRes.y);
       vec2 uv = (gl_FragCoord.xy * 2.0 - uRes) / S;   // -1..1 across the canvas
-      float t = uTime * 0.22;                            // slow: thick liquid, not water
+      float t = uTime * 0.3;                             // thick liquid, not water
 
       float R = 0.94;
       vec2 n2 = uv / R;
