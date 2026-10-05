@@ -115,7 +115,7 @@ h3 { font-weight: 500; font-size: 1.05rem; line-height: 1.3; letter-spacing: -0.
   Every tile is drawn at full size and the side ones are scaled down with a transform.
   Animating width/height meant resizing the WebGL canvas on every frame, which stuttered.
 */
-.carousel { --big: 300px; --shrink: .667; --off: 340px; --row: 306px; --cap: 50px; --pt: 30px; position: relative; overflow: hidden; padding-block: var(--pt) 24px; background: var(--panel); border: var(--hair) solid var(--line); }
+.carousel { --big: 260px; --shrink: .667; --off: 320px; --row: 266px; --cap: 50px; --pt: 30px; position: relative; overflow: hidden; padding-block: var(--pt) 24px; background: var(--panel); border: var(--hair) solid var(--line); }
 .stage { position: relative; height: calc(var(--row) + var(--cap)); }
 .slide { position: absolute; top: 0; left: 50%; width: 300px; margin: 0; display: flex; flex-direction: column; align-items: center; text-align: center; transform: translateX(calc(-50% + var(--x, 0px))); transition: transform .6s var(--ease), opacity .4s ease; cursor: pointer; }
 .slide.center { cursor: default; }
@@ -244,7 +244,7 @@ footer { border-top: var(--hair) solid var(--line); }
 }
 
 @media (max-width: 640px) {
-  .carousel { --big: 230px; --shrink: .61; --off: 235px; --row: 236px; --cap: 48px; --pt: 22px; }
+  .carousel { --big: 200px; --shrink: .61; --off: 215px; --row: 206px; --cap: 48px; --pt: 22px; }
   .slide { width: 220px; }
   .slide:not(.center) figcaption { opacity: 0; }
   .arrows { width: 300px; }
