@@ -45,16 +45,18 @@
 
       // The surface bends away at the edge, so the liquid seems to wrap round a ball
       vec2 p = n * (1.0 + 0.45 * (1.0 - z)) * 0.6;
-      float t = uTime * 0.16;
+      float t = uTime * 0.22;
 
       // Domain warping: each layer of noise bends the next, which gives slow, folding,
       // viscous shapes instead of smooth bands
-      vec2 q = vec2(fbm(p + vec2(0.0, 0.0) + vec2(0.30, 0.10) * t),
-                    fbm(p + vec2(5.2, 1.3) - vec2(0.12, 0.25) * t));
-      vec2 w = vec2(fbm(p + 1.8 * q + vec2(1.7, 9.2) + 0.35 * t),
-                    fbm(p + 1.8 * q + vec2(8.3, 2.8) - 0.30 * t));
-      float f = fbm(p + 1.6 * w);
-      float g = fbm(p + 1.6 * w + vec2(0.07, 0.07));   // a step away, for the sheen on the folds
+      // Every layer drifts upward through the noise, so the liquid pours down across the ball
+      vec2 down = vec2(0.0, t);
+      vec2 q = vec2(fbm(p + vec2(0.0, 0.0) + 0.55 * down),
+                    fbm(p + vec2(5.2, 1.3) + 0.45 * down));
+      vec2 w = vec2(fbm(p + 1.8 * q + vec2(1.7, 9.2) + 0.75 * down),
+                    fbm(p + 1.8 * q + vec2(8.3, 2.8) + 0.65 * down));
+      float f = fbm(p + 1.6 * w + 0.40 * down);
+      float g = fbm(p + 1.6 * w + 0.40 * down + vec2(0.07, 0.07));   // a step away, for the sheen on the folds
 
       // Two or three colours carry the ball; the deep, accent and light ones only touch it
       vec3 col = mix(c1, c2, smoothstep(0.36, 0.60, f));
