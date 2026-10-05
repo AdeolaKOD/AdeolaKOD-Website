@@ -183,23 +183,23 @@
       ? Array.prototype.filter.call(box.children, function (c) { return c.tagName !== 'H1'; })
       : [box];
     kids.forEach(function (el) {
-      headDelay += 120;
-      mark(el, headDelay + 200);
+      headDelay += 50;
+      mark(el, headDelay + 80);
     });
   });
 
   // Then each section, staggering project cards individually
   document.querySelectorAll('main > section:not(.hero):not(.page-head)').forEach(function (sec) {
-    // Sections already on screen start 0.5s in on the home page and 0.35s in elsewhere;
+    // Sections already on screen start 0.2s in on the home page and 0.15s in elsewhere;
     // ones below the fold get no delay and reveal as they're scrolled to.
     var home = !!document.querySelector('.hero');
     var onScreen = sec.getBoundingClientRect().top < innerHeight;
-    var base = onScreen ? (home ? 500 : 350) : 0;
-    var step = home ? 80 : 110;
+    var base = onScreen ? (home ? 200 : 150) : 0;
+    var step = home ? 40 : 50;
     Array.prototype.forEach.call(sec.children, function (el, i) {
       var cards = el.querySelectorAll(':scope > .project');
       if (cards.length) {
-        Array.prototype.forEach.call(cards, function (card, j) { mark(card, base + j * (step + 20)); });
+        Array.prototype.forEach.call(cards, function (card, j) { mark(card, base + j * (step + 10)); });
       } else {
         mark(el, base + i * step);
       }
@@ -241,11 +241,11 @@
     later.forEach(function (el) { io.observe(el); });
   }
 
-  // Wait for Geist so the headline doesn't reflow mid-animation, but never longer than 1.2s.
+  // Wait for Geist so the headline doesn't reflow mid-animation, but never longer than 0.6s.
   function begin() {
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(start);
-      setTimeout(start, 1200);
+      setTimeout(start, 600);
     } else {
       start();
     }

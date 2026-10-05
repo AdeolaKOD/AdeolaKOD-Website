@@ -22,7 +22,7 @@
 <link rel="icon" href="/assets/img/adeola.jpg" type="image/jpeg">
 <link rel="apple-touch-icon" href="/assets/img/adeola.jpg">
 <link rel="preload" href="/assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css?v=20261004m">
+<link rel="stylesheet" href="/assets/css/site.css?v=20261005a">
 <!-- Runs before first paint. If you change it, update the sha256 in the CSP above or the browser will block it. -->
 <script>
   (function () {
@@ -48,7 +48,7 @@
     }
   })();
 </script>
-<script src="/assets/js/site.js?v=20261004m" defer fetchpriority="high"></script>
+<script src="/assets/js/site.js?v=20261005a" defer fetchpriority="high"></script>
 </head>
 <body>
 <header class="bar">
@@ -65,7 +65,8 @@
 </section>
 
 <section class="narrow statement-section">
-  <p class="statement">My research investigates how touchless, gesture-based interfaces can be designed for older adults, focusing on how they perceive on-screen feedback and how reliably they recall gesture commands over time. My proposed MSc direction compares user-defined and designer-defined gesture sets with adults over 65 under different forms of visual feedback, and evaluates whether letting users define their own gestures reduces the recall cost associated with ageing, measured through accuracy, next-day recall and perceived effort.</p>
+  <p class="statement">Touchless, gesture-based interfaces offer no visible affordances. Each command must be recalled from memory and performed in mid-air, and feedback is the only sign that it worked. For older adults, age-related declines in working memory, processing speed and contrast sensitivity raise this cognitive cost. My research asks how gesture vocabularies and their feedback can be designed so that older adults learn them quickly and retain them over time.</p>
+  <p class="statement">My proposed MSc study compares user-defined gesture sets, elicited from adults aged 65 and over, with designer-defined sets under contrasting forms of visual feedback, including feedforward that previews a gesture&rsquo;s outcome before it completes. Outcomes are recognition accuracy, immediate and 24-hour recall, and subjective workload (NASA-TLX), with set size varied to measure how recall degrades as the vocabulary grows.</p>
 </section>
 
 <!-- TODO: add a Publications section above the thesis once I have one. -->
@@ -73,16 +74,19 @@
   <h2 id="thesis-h">Thesis</h2>
   <ol class="list">
     <li>
-      <p class="entry-title"><a href="/docs/Adeola_Kola-Olaleye_Thesis.pdf">Cognitive Vision-Based Hand Gesture Recognition System for Media and Accessibility Control</a></p>
-      <p class="entry-meta">Adeola Kola-Olaleye. Undergraduate thesis, Nile University of Nigeria, 2026. Supervised by Mrs Aisha Lawal. Selected for the faculty thesis exhibition.</p>
-      <p class="entry-desc">The thesis asks whether a single consumer webcam, without depth sensors or a GPU, can support continuous, real-time control of a computer through hand gestures, while separating intentional input from noise such as hand tremor.</p>
+      <p class="entry-title"><a href="/docs/Adeola_Kola-Olaleye_Thesis.pdf" target="_blank" rel="noopener">Cognitive Vision-Based Hand Gesture Recognition System for Media and Accessibility Control</a></p>
+      <p class="entry-meta">Adeola Kola-Olaleye. Undergraduate thesis, Nile University of Nigeria, 2026. Supervised by Mrs Aisha Lawal.</p>
+      <h3 class="entry-sub">Abstract</h3>
+      <p class="entry-desc">Conventional pointing devices require users to translate movement on a horizontal desk plane into cursor movement on a vertical display, and assume fine motor control that many users with motor impairments lack. This thesis presents a real-time, bimanual gesture interface that controls system volume, display brightness and media playback without physical contact. MediaPipe hand-landmark inference runs entirely on a consumer CPU, and hand geometry is mapped directly to continuous controls: thumb&ndash;index distance sets volume, apparent palm size acts as a depth proxy for brightness, and the other hand issues discrete playback commands. A folded-finger clutch and a time-gated double tap separate intentional gestures from tremor and incidental movement. Grounded in cognitive load theory and embodied interaction, the design maps each physical action to a single digital action. In evaluation, the system sustained 28&ndash;30&nbsp;FPS with a mean end-to-end latency of 35&nbsp;ms, within a 50&nbsp;ms real-time requirement, with all processing on-device. Performance degrades in low light and against backgrounds close to skin tone; future work proposes user-defined gesture mappings for users with motor restrictions.</p>
+      <h3 class="entry-sub">Research question</h3>
+      <p class="entry-desc">Can monocular hand-landmark tracking on a consumer CPU support continuous, low-latency system control while reliably rejecting unintended input such as tremor?</p>
       <dl class="objectives">
-        <div><dt>Objective 1</dt><dd>Design a five-layer pipeline (acquisition, pre-processing, inference, logic and actuation) that maps MediaPipe hand landmarks from a standard webcam to Windows controls for volume, display brightness and media playback.</dd></div>
-        <div><dt>Objective 2</dt><dd>Map gesture intensity continuously, using the Euclidean distance between thumb and index-finger landmarks for volume and apparent palm size as a depth proxy for brightness.</dd></div>
-        <div><dt>Objective 3</dt><dd>Reject unintended input with a folded-finger clutch that gates control and a time-gated double tap for discrete playback commands.</dd></div>
-        <div><dt>Objective 4</dt><dd>Benchmark frame rate, end-to-end latency and CPU usage on consumer hardware against a 50&nbsp;ms latency requirement. The system sustained 28&ndash;30&nbsp;FPS with a mean end-to-end latency of 35&nbsp;ms.</dd></div>
+        <div><dt>Objective 1</dt><dd>Architect a five-layer pipeline (acquisition, pre-processing, inference, logic and actuation) that maps 21-point MediaPipe hand landmarks to OS-level controls: WASAPI audio, DDC/CI display brightness and media transport.</dd></div>
+        <div><dt>Objective 2</dt><dd>Derive continuous control signals from hand geometry, using thumb&ndash;index Euclidean distance for volume and apparent palm size as a monocular depth (z-axis) proxy for brightness, linearly interpolated into each control range.</dd></div>
+        <div><dt>Objective 3</dt><dd>Separate intentional input from noise with a folded-finger clutch that gates control and a time-gated double tap for discrete commands, suppressing false activations from tremor and incidental motion.</dd></div>
+        <div><dt>Objective 4</dt><dd>Evaluate real-time performance against non-functional requirements (latency under 50&nbsp;ms, above 20&nbsp;FPS with bimanual tracking) through per-layer latency profiling, frame-rate stability and CPU utilisation. The system sustained 28&ndash;30&nbsp;FPS at a mean end-to-end latency of 35&nbsp;ms.</dd></div>
       </dl>
-      <p class="entry-links"><a href="/docs/Adeola_Kola-Olaleye_Thesis.pdf">PDF</a><a href="https://github.com/AdeolaKOD/Cognitive-Vision-Gesture-Control">Code</a></p>
+      <p class="entry-links"><a href="/docs/Adeola_Kola-Olaleye_Thesis.pdf" target="_blank" rel="noopener">PDF</a><a href="https://github.com/AdeolaKOD/Cognitive-Vision-Gesture-Control">Code</a></p>
     </li>
   </ol>
 </section>
@@ -93,7 +97,6 @@
   <div class="wrap foot">
     <nav aria-label="Contact">
       <a href="mailto:inboxadeola@gmail.com"><span class="lbl">Inboxadeola@gmail.com<svg class="ext" viewBox="0 0 12 12" aria-hidden="true"><path d="M5 0.6H0.6V11.4H11.4V7" fill="none" stroke="currentColor" stroke-width="1.2"/><path class="ea" d="M7 0.6H11.4V5M11.4 0.6 5.4 6.6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></a>
-      <a href="https://github.com/AdeolaKOD" target="_blank" rel="noopener noreferrer"><span class="lbl">GitHub<svg class="ext" viewBox="0 0 12 12" aria-hidden="true"><path d="M5 0.6H0.6V11.4H11.4V7" fill="none" stroke="currentColor" stroke-width="1.2"/><path class="ea" d="M7 0.6H11.4V5M11.4 0.6 5.4 6.6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span><span class="visually-hidden"> (opens in a new tab)</span></a>
     </nav>
   </div>
 </footer>
