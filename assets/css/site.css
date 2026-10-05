@@ -30,6 +30,9 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
+/* Always keep room for the scrollbar, so short pages (Research) don't sit a few pixels to the right of long ones. */
+html { scrollbar-gutter: stable; }
+@supports not (scrollbar-gutter: stable) { html { overflow-y: scroll; } }
 body { background: var(--page); color: var(--text); font-family: var(--font); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
 img { max-width: 100%; }
