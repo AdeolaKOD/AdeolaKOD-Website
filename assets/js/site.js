@@ -183,19 +183,19 @@
       ? Array.prototype.filter.call(box.children, function (c) { return c.tagName !== 'H1'; })
       : [box];
     kids.forEach(function (el) {
-      headDelay += 50;
-      mark(el, headDelay + 80);
+      headDelay += 75;
+      mark(el, headDelay + 120);
     });
   });
 
   // Then each section, staggering project cards individually
   document.querySelectorAll('main > section:not(.hero):not(.page-head)').forEach(function (sec) {
-    // Sections already on screen start 0.2s in on the home page and 0.15s in elsewhere;
+    // Sections already on screen start 0.3s in on the home page and 0.22s in elsewhere;
     // ones below the fold get no delay and reveal as they're scrolled to.
     var home = !!document.querySelector('.hero');
     var onScreen = sec.getBoundingClientRect().top < innerHeight;
-    var base = onScreen ? (home ? 200 : 150) : 0;
-    var step = home ? 40 : 50;
+    var base = onScreen ? (home ? 300 : 220) : 0;
+    var step = home ? 60 : 75;
     Array.prototype.forEach.call(sec.children, function (el, i) {
       var cards = el.querySelectorAll(':scope > .project');
       if (cards.length) {

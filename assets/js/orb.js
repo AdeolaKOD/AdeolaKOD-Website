@@ -1,8 +1,8 @@
 // adeolakod.com
-// The orbs on the home page. Each <canvas class="orb" data-colors="a,b,c"> gets its own small
-// WebGL shader: soft drifting clouds of colour filling a square, with a glass ball in front that
-// magnifies them, picked out by a thin rim of light. Heavy grain on top.
-// Loosely inspired by the orbs on elevenlabs.io.
+// The orbs on the home page. Each <canvas class="orb" data-colors="a,b,c,d,e"> gets its own small
+// WebGL shader that draws a lit sphere on a transparent background. Its colours are a slow, thick
+// liquid that flows around the surface (layers of sines warping a point on the sphere), with soft
+// light from the top left, a glossy highlight and a pale rim. Inspired by the orbs on elevenlabs.io.
 
 (function () {
   'use strict';
@@ -17,71 +17,67 @@
 
     float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 
-    float blob(vec2 p, vec2 c, float r) { vec2 d = p - c; return exp(-dot(d, d) / (r * r)); }
+    mat3 rotY(float a) { float c = cos(a), s = sin(a); return mat3(c, 0.0, -s, 0.0, 1.0, 0.0, s, 0.0, c); }
+    mat3 rotX(float a) { float c = cos(a), s = sin(a); return mat3(1.0, 0.0, 0.0, 0.0, c, s, 0.0, -s, c); }
 
-    // Layers of sines push the coordinates around, so the colours flow like liquid rather than slide
-    vec2 warp(vec2 p, float t) {
-      for (int k = 1; k < 5; k++) {
+    // A point on the sphere pushed around by layers of slow sines: the shapes stretch, fold and
+    // stay smooth, like honey or paint being stirred rather than water.
+    vec3 liquid(vec3 p, float t) {
+      for (int k = 1; k < 6; k++) {
         float i = float(k);
-        p.x += 0.22 / i * sin(i * 1.6 * p.y + t * 0.8 + 0.4 * i);
-        p.y += 0.20 / i * cos(i * 1.4 * p.x - t * 0.7 + 0.7 * i);
+        p += (0.55 / i) * sin(i * 1.15 * p.yzx + t * (0.55 + 0.12 * i) + vec3(0.0, 1.7, 3.1) * i);
       }
       return p;
     }
-    // Each colour cloud also wanders on its own slow loop
-    vec2 drift(float t, float k) { return 0.32 * vec2(sin(t * (0.45 + 0.08 * k) + k * 1.7), cos(t * (0.38 + 0.06 * k) + k * 2.3)); }
 
-    // What you see through the ball: mostly the main colour, with the second colour round one side,
-    // the deep colour pooling at the bottom and a pale glow at the top left.
-    vec3 inner(vec2 p, float t) {
-      p = warp(p, t);
-      vec3 col = c1;
-      col = mix(col, c4, 0.50 * blob(p, vec2(-0.95, -0.10) + drift(t, 1.0), 0.50));
-      col = mix(col, c2, 0.92 * blob(p, vec2(0.95, 0.20) + drift(t, 2.0), 0.68));
-      col = mix(col, c2, 0.55 * blob(p, vec2(0.45, -0.70) + drift(t, 3.0), 0.32));
-      col = mix(col, c3, 0.90 * blob(p, vec2(-0.05, -1.00) + drift(t, 4.0), 0.52));
-      col = mix(col, c5, 0.70 * blob(p, vec2(-0.70, 0.85) + drift(t, 5.0), 0.50));
+    vec3 paint(vec3 q) {
+      float f1 = 0.5 + 0.5 * sin(q.x * 1.3 + q.y * 0.4);
+      float f2 = 0.5 + 0.5 * sin(q.y * 1.2 - q.z * 0.7 + 1.0);
+      float f3 = 0.5 + 0.5 * sin(q.z * 1.4 + q.x * 0.5 + 2.2);
+      // Each colour only flows into the ones it sits well with, so the blends stay clean
+      float m2 = smoothstep(0.50, 0.66, f1);
+      vec3 col = mix(c1, c2, m2);
+      col = mix(col, c4, smoothstep(0.70, 0.95, f3) * 0.45 * (1.0 - m2));   // warm dark through the main colour
+      col = mix(col, c3, smoothstep(0.72, 0.98, f2) * 0.60 * m2);           // deep colour pooling in the second
+      vec3 glow = c5 * smoothstep(0.45, 1.00, f1 * f3) * 0.55;
+      col = 1.0 - (1.0 - col) * (1.0 - glow);                                 // light veins, added like light
+      col = mix(vec3(dot(col, vec3(0.299, 0.587, 0.114))), col, 1.2);
       return col;
-    }
-
-    // The square behind the ball: the same colours arranged round the corners, a little darker
-    vec3 outer(vec2 p, float t) {
-      p = warp(p, t * 0.8);
-      vec3 col = mix(c1, c4, 0.55);
-      col = mix(col, c2, 0.95 * blob(p, vec2(1.00, 1.00) + drift(t, 6.0), 0.80));
-      col = mix(col, c5, 0.80 * blob(p, vec2(-1.00, 1.05) + drift(t, 7.0), 0.60));
-      col = mix(col, c4, 0.90 * blob(p, vec2(1.00, -1.00) + drift(t, 8.0), 0.80));
-      col = mix(col, c3, 0.70 * blob(p, vec2(-0.90, -1.05) + drift(t, 9.0), 0.50));
-      return col * 0.92;
     }
 
     void main() {
       float S = min(uRes.x, uRes.y);
-      vec2 uv = (gl_FragCoord.xy * 2.0 - uRes) / S;   // -1..1 across the square
-      float t = uTime * 0.7;
+      vec2 uv = (gl_FragCoord.xy * 2.0 - uRes) / S;   // -1..1 across the canvas
+      float t = uTime * 0.22;                            // slow: thick liquid, not water
 
-      vec3 bg = outer(uv, t);
+      float R = 0.94;
+      vec2 n2 = uv / R;
+      float r = length(n2);
+      float px = 2.0 / (S * R);                          // one pixel, for a smooth edge
+      float alpha = 1.0 - smoothstep(1.0 - 1.5 * px, 1.0, r);
+      if (alpha <= 0.0) { gl_FragColor = vec4(0.0); return; }
 
-      // A glass ball almost as big as the square, read by what is inside it and a faint rim
-      vec2 ctr = vec2(0.0);
-      float R = 0.9;   // the whole ball stays inside the square
-      vec2 n = (uv - ctr) / R;
-      float r = length(n);
       float z = sqrt(max(0.0, 1.0 - min(r, 1.0) * min(r, 1.0)));
-      float a = t * 0.12;   // the view through the ball slowly turns
-      vec2 q = mat2(cos(a), -sin(a), sin(a), cos(a)) * n * (0.92 + 0.1 * (1.0 - z));
-      vec3 orb = inner(q, t);
-      orb *= 0.93 + 0.1 * clamp(dot(vec3(n, z), normalize(vec3(-0.4, 0.5, 0.8))), 0.0, 1.0);
+      vec3 N = vec3(n2, z);
 
-      vec2 dir = normalize(n + 1e-4);
-      float rim = smoothstep(0.965, 0.99, r) * (1.0 - smoothstep(0.99, 1.0, r));
-      orb += rim * (0.02 + 0.22 * max(dot(dir, normalize(vec2(0.55, 0.85))), 0.0)) * mix(c5, vec3(1.0), 0.6);
-      orb *= 1.0 - 0.10 * smoothstep(0.88, 1.0, r) * max(dot(dir, normalize(vec2(-0.5, -0.9))), 0.0);
+      // The colours live on the sphere itself and the whole ball slowly turns, so it reads as 3D
+      vec3 P = rotX(0.35) * rotY(t * 0.6) * N;
+      vec3 col = paint(liquid(P * 1.6, t));
 
-      float inside = 1.0 - smoothstep(0.996, 1.006, r);
-      vec3 col = mix(bg, orb, inside);
-      col += (hash(floor(gl_FragCoord.xy)) - 0.5) * 0.12;   // film grain
-      gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+      // Light: soft from the top left, darker toward the far edge, glossy highlight, pale rim
+      vec3 L = normalize(vec3(-0.45, 0.6, 0.75));
+      float diff = clamp(dot(N, L), 0.0, 1.0);
+      col *= 0.72 + 0.38 * diff;
+      col *= 0.86 + 0.14 * z;
+      vec3 H = normalize(L + vec3(0.0, 0.0, 1.0));
+      float nh = clamp(dot(N, H), 0.0, 1.0);
+      col += mix(c5, vec3(1.0), 0.6) * (0.12 * pow(nh, 5.0) + 0.20 * pow(nh, 28.0));   // soft, satin sheen
+      float fres = pow(1.0 - z, 3.0);
+      col = mix(col, mix(c5, vec3(1.0), 0.45), fres * 0.5);   // glowing rim
+
+      col += (hash(floor(gl_FragCoord.xy)) - 0.5) * 0.05;   // a little grain
+      col = clamp(col, 0.0, 1.0);
+      gl_FragColor = vec4(col * alpha, alpha);
     }
   `;
 
@@ -96,13 +92,14 @@
   function fallback(canvas, cols) {
     var div = document.createElement('div');
     div.className = canvas.className + ' ready';
-    div.style.background = 'radial-gradient(circle at 45% 40%, ' + cols[0] + ' 0, ' + cols[1] + ' 70%, ' + cols[2] + ' 100%)';
+    div.style.background = 'radial-gradient(circle at 38% 32%, ' + (cols[4] || cols[0]) + ' 0, ' + cols[0] + ' 35%, ' + cols[1] + ' 75%, ' + cols[2] + ' 100%)';
+    div.style.borderRadius = '50%';
     canvas.replaceWith(div);
   }
 
   function start(canvas) {
     var cols = (canvas.getAttribute('data-colors') || '#FF9A3D,#4FA65A,#1E4A5C,#B8461F,#FFE2B8').split(',');
-    var gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'low-power' });
+    var gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false, powerPreference: 'low-power' });
     if (!gl) { fallback(canvas, cols); return; }
 
     function compile(type, src) {

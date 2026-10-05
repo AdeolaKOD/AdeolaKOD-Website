@@ -115,7 +115,7 @@ h3 { font-weight: 500; font-size: 1.05rem; line-height: 1.3; letter-spacing: -0.
   Every tile is drawn at full size and the side ones are scaled down with a transform.
   Animating width/height meant resizing the WebGL canvas on every frame, which stuttered.
 */
-.carousel { --big: 300px; --shrink: .667; --off: 340px; --row: 306px; --cap: 50px; --pt: 30px; position: relative; overflow: hidden; padding-block: var(--pt) 24px; background: var(--panel); border: 1px solid var(--line); }
+.carousel { --big: 300px; --shrink: .667; --off: 340px; --row: 306px; --cap: 50px; --pt: 30px; position: relative; overflow: hidden; padding-block: var(--pt) 24px; }
 .stage { position: relative; height: calc(var(--row) + var(--cap)); }
 .slide { position: absolute; top: 0; left: 50%; width: 300px; margin: 0; display: flex; flex-direction: column; align-items: center; text-align: center; transform: translateX(calc(-50% + var(--x, 0px))); transition: transform .6s var(--ease), opacity .4s ease; cursor: pointer; }
 .slide.center { cursor: default; }
@@ -272,24 +272,24 @@ footer { border-top: 1px solid var(--line); }
 
 /* Top bar: on the first page of a visit the grey fades in from white and the links blur in.
    "bar-in" is set by the head script, so later pages show the bar straight away. */
-.bar-in .bar { animation: barIn .45s var(--ease) both; }
+.bar-in .bar { animation: barIn .65s var(--ease) both; }
 @keyframes barIn { from { background-color: var(--page); border-bottom-color: transparent; } }
-.bar-in .bar .navlink { opacity: 0; filter: blur(3px); animation: wordIn .4s var(--ease) forwards; animation-delay: 40ms; }
-.bar-in .menu .navlink:nth-child(1) { animation-delay: 70ms; }
-.bar-in .menu .navlink:nth-child(2) { animation-delay: 100ms; }
-.bar-in .menu .navlink:nth-child(3) { animation-delay: 130ms; }
+.bar-in .bar .navlink { opacity: 0; filter: blur(3px); animation: wordIn .6s var(--ease) forwards; animation-delay: 60ms; }
+.bar-in .menu .navlink:nth-child(1) { animation-delay: 100ms; }
+.bar-in .menu .navlink:nth-child(2) { animation-delay: 145ms; }
+.bar-in .menu .navlink:nth-child(3) { animation-delay: 190ms; }
 .bar-in.wait .bar, .bar-in.wait .bar .navlink { animation-play-state: paused; }
 
 /* Headline words fade in one by one (only opacity and a light blur, so nothing shifts). Kept quick and subtle. */
-.js h1 .w { display: inline-block; opacity: 0; filter: blur(4px); animation: wordIn .5s var(--ease) forwards; animation-delay: calc(var(--i) * 30ms + 30ms); will-change: opacity, filter; backface-visibility: hidden; }
+.js h1 .w { display: inline-block; opacity: 0; filter: blur(4px); animation: wordIn .75s var(--ease) forwards; animation-delay: calc(var(--i) * 45ms + 50ms); will-change: opacity, filter; backface-visibility: hidden; }
 .js.wait h1 .w { animation-play-state: paused; }
 @keyframes wordIn { to { opacity: 1; filter: blur(0); } }
 
 /* Everything else fades up as it scrolls into view. */
-.js .blur-in { opacity: 0; filter: blur(3px); transform: translateY(6px); transition: opacity .45s var(--ease), filter .45s var(--ease), transform .45s var(--ease); transition-delay: var(--d, 0ms); }
+.js .blur-in { opacity: 0; filter: blur(3px); transform: translateY(6px); transition: opacity .7s var(--ease), filter .7s var(--ease), transform .7s var(--ease); transition-delay: var(--d, 0ms); }
 .js .blur-in.is-in { opacity: 1; filter: blur(0); transform: none; }
 .js .blur-in.no-tr { transition: none; }
-.js .blur-in.quick { transition-duration: .3s; transition-delay: 0ms; }
+.js .blur-in.quick { transition-duration: .45s; transition-delay: 0ms; }
 
 @media (prefers-reduced-motion: no-preference) {
   /* The project drawings stay still until you hover a project card (or tab into it).
