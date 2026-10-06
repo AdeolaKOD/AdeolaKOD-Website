@@ -118,7 +118,19 @@
     gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERTEX));
     gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAGMENT));
     gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { fallback(canvas, cols); return; }
+
+    // Asking for LINK_STATUS straight away freezes the page until the shader has compiled.
+    // Where the browser can compile in the background, check back each frame instead.
+    var par = gl.getExtension('KHR_parallel_shader_compile');
+    (function linked() {
+      if (gl.isContextLost()) return;
+      if (par && !gl.getProgramParameter(prog, par.COMPLETION_STATUS_KHR)) { requestAnimationFrame(linked); return; }
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { fallback(canvas, cols); return; }
+      run(canvas, gl, prog, cols);
+    })();
+  }
+
+  function run(canvas, gl, prog, cols) {
     gl.useProgram(prog);
 
     // One quad covering the whole canvas
@@ -184,15 +196,49 @@
     }
   }
 
-  // Start each orb as soon as this script runs (it's deferred, so the page is already parsed),
-  // but only once the carousel is near the screen. On phones it starts below the fold.
+  // Setting up the orbs used to hold up the headline's fade-in on phones by about a third of a
+  // second (building three shaders at once). So now they wait until the page has started coming in
+  // (site.js takes "wait" off <html>), and get built one per frame from there.
+  // TODO: try it on a cheap Android phone. If the background compile works there, one per frame may be overkill.
+  var queue = [];
+  var busy = false;
+
+  function next() {
+    start(queue.shift());
+    if (queue.length) requestAnimationFrame(next);
+    else busy = false;
+  }
+
+  function enqueue(canvas) {
+    queue.push(canvas);
+    if (!busy) { busy = true; requestAnimationFrame(next); }
+  }
+
+  // Only once the carousel is near the screen. On phones it starts below the fold.
   function whenNear(canvas) {
-    if (!('IntersectionObserver' in window)) { start(canvas); return; }
+    if (!('IntersectionObserver' in window)) { enqueue(canvas); return; }
     var io = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) { io.disconnect(); start(canvas); }
+      if (entries[0].isIntersecting) { io.disconnect(); enqueue(canvas); }
     }, { rootMargin: '400px 0px' });
     io.observe(canvas);
   }
 
-  document.querySelectorAll('canvas.orb').forEach(whenNear);
+  function afterReveal(fn) {
+    var root = document.documentElement;
+    // site.js needs two frames to start the fade-in, so give it those first
+    function go() {
+      requestAnimationFrame(function () { requestAnimationFrame(function () { requestAnimationFrame(fn); }); });
+    }
+    if (!root.classList.contains('wait')) { go(); return; }
+    var mo = new MutationObserver(function () {
+      if (root.classList.contains('wait')) return;
+      mo.disconnect();
+      go();
+    });
+    mo.observe(root, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  afterReveal(function () {
+    document.querySelectorAll('canvas.orb').forEach(whenNear);
+  });
 })();

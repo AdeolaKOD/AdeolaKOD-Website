@@ -6,9 +6,12 @@
 
 @font-face {
   font-family: "Geist";
-  /* Subset to Latin (plus Hungarian accents) to keep the file small. The full font is ~70 KB, this is ~32 KB. */
+  /* Subset to Latin (plus Hungarian accents) to keep the file small. The full font is ~70 KB, this is ~19 KB:
+     nothing on the site is lighter than 400, so the thin end of the weight axis is gone, and so are the
+     stylistic sets I don't use.
+     TODO: re-subset from the original if I ever want a light weight (under 400). */
   src: url("../fonts/Geist-Variable.woff2") format("woff2");
-  font-weight: 100 900;
+  font-weight: 400 900;
   font-style: normal;
   font-display: swap;
 }
